@@ -27,6 +27,8 @@ window.app = window.app || {};
         var vectorAngles = [];
         var color = '';
 
+        var backClipping = false;
+
         var virtualPage = document.createElement('canvas');
             virtualPage.width  = $element.width();
             virtualPage.height = $element.height();
@@ -126,8 +128,11 @@ window.app = window.app || {};
 
                 aroundXangle += 3;
 
-                if (Math.cos(aroundZangle * deg) < 0) {
-                    //color = '#000';
+                if (backClipping)
+                {
+                    if (Math.cos(aroundZangle * deg) < 0) {
+                        color = '#000';
+                    }
                 }
 
                 this.drawParticle(x, y);
@@ -145,6 +150,15 @@ window.app = window.app || {};
 
             return this;
         };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.enableBackclipping = function enableBackclipping(val)
+        {
+            backClipping = Boolean(val);
+            return this;
+        }
 
         //==================================================================================
         //
@@ -168,7 +182,9 @@ window.app = window.app || {};
         };
     };
 
+    /*
     var ball = new app.Ball($('canvas'));
         ball.init();
+    */
 
 })(window.app, jQuery);
