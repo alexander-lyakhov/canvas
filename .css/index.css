@@ -1,0 +1,131 @@
+html, body {
+    height: 100%;
+}
+
+body    {
+    font: 13px verdana;
+    color: #000;
+    background: #000;
+    position: relative;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;
+}
+
+.particle {
+    background: #099;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 100px;
+    top: 0;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.ripple-aria {
+    background: #000;
+    width: 400px;
+    height: 400px;
+    margin: -200px 0 0 -200px;
+}
+
+.ripple-particle {
+    background: #fff;
+    width: 4px;
+    height: 4px;
+    position: absolute;
+}
+
+canvas {
+    background: #000;
+}
+
+.control-panel {
+    background: #333;
+    border: 1px solid #666;
+    text-align: center;
+    width: 160px;
+    height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.preset-list {
+    margin: 8px 8px;
+}
+
+.preset-list__item {
+    background: #444;
+    border: 1px solid #808080;
+    margin: 4px 0;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+}
+
+.preset-list__item.selected {
+    background: #333;
+}
+
+.preset-list__item.selected a {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.preset-list__item a {
+    color: #ccc;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+.preset-list__item a:hover {
+    background: #333;
+}
+
+.checkbox-group {
+    margin: 16px 0;
+}
+
+.checkbox-wrapper {
+    color: #ccc;
+    text-align: left;
+    margin: 12px 8px;
+}
+
+.control-panel__checkbox {
+    display: none;
+}
+
+.control-panel__label {
+    cursor: pointer;
+}
+
+.control-panel__label:before {
+    content: '';
+    border: 1px solid #999;
+    box-sizing: border-box;
+    display: block;
+    width: 16px;
+    height: 16px;
+    line-height: 20px;
+    float: left;
+    margin: 0 8px 0 0;
+}
+
+.control-panel__checkbox:checked + .control-panel__label:before {
+    background: #999;
+}
