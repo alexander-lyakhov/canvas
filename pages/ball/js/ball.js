@@ -11,13 +11,16 @@ window.app = window.app || {};
             return new Ball($element);
         }
 
+        var DEFAULT_SPHERE_RADIUS = 300;
+        var KEY_HOME = 36;
+
         $element[0].width = window.innerWidth;
         $element[0].height = window.innerHeight - 16;
 
         var xCenter = $element.width()  >> 1;
         var yCenter = $element.height() >> 1;
 
-        var R = 300;
+        var R = DEFAULT_SPHERE_RADIUS;
         var deg = Math.PI / 180;
 
         var aroundXangle = 0;
@@ -56,24 +59,7 @@ window.app = window.app || {};
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            var tracking = false;
-            var y0 = 0;
-            var r = R;
-
-            $('body')
-                .on('mousedown', function(e) {
-                    y0 = e.clientY;
-                    tracking = true;
-                })
-                .on('mouseup', function(e) {
-                    r = R;
-                    tracking = false;
-                })
-                .on('mousemove', function(e) {
-                    if (tracking) {
-                        R = r + (e.clientY - y0);
-                    }
-                });
+            var _this = this;
 
             $(window).on('resize', function() {
 
@@ -83,6 +69,33 @@ window.app = window.app || {};
                 xCenter = $element.width()  >> 1;
                 yCenter = $element.height() >> 1;
             });
+
+            $('body')
+                .on('mousewheel DOMMouseScroll', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
+
+                    if (Math.abs(direction) === 120) {
+                        if (direction > 0) {
+                            _this.scale(1);
+                        } else {
+                            _this.scale(-1);
+                        }
+                    } else {
+                        if (direction < 0) {
+                            _this.scale(1);
+                        } else {
+                            _this.scale(-1);
+                        }
+                    }
+                })
+                .on('keydown', function(e) {
+                    if (e.keyCode === KEY_HOME) {
+                        R = DEFAULT_SPHERE_RADIUS;
+                    }
+                });
         };
 
         //==================================================================================
@@ -158,7 +171,16 @@ window.app = window.app || {};
         {
             backClipping = Boolean(val);
             return this;
-        }
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.scale = function scale(val)
+        {
+            R += R / (val << 4);
+            return this;
+        };
 
         //==================================================================================
         //
@@ -181,10 +203,5 @@ window.app = window.app || {};
             return this;
         };
     };
-
-    /*
-    var ball = new app.Ball($('canvas'));
-        ball.init();
-    */
 
 })(window.app, jQuery);
