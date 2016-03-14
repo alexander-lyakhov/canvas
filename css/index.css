@@ -9,6 +9,7 @@ body    {
     position: relative;
 }
 
+
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none;   /* Chrome/Safari/Opera */
@@ -16,6 +17,40 @@ body    {
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* IE/Edge */
     user-select: none;
+}
+
+canvas {
+    background: #000;
+}
+
+.page-list {
+    /*background: #333;*/
+    text-align: center;
+    width: 100%;
+    height: 320px;
+    position: absolute;
+    top: 50%;
+    margin: -160px 0 0 0;
+}
+
+.page-list__item {
+    /*background: #066;*/
+    box-sizing: border-box;
+    width: 256px;
+    height: 256px;
+    display: inline-block;
+    margin: 0 64px;
+}
+
+.page-list__item a {
+    border: 1px solid #666;
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+.page-list__item a:hover {
+    border: 1px solid #aaa;
 }
 
 .particle {
@@ -45,10 +80,6 @@ body    {
     width: 4px;
     height: 4px;
     position: absolute;
-}
-
-canvas {
-    background: #000;
 }
 
 .control-panel {

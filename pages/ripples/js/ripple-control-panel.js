@@ -30,15 +30,6 @@
             particle: {
                 kf: 0.05
             }
-        },
-        'preset 6': {
-            distance: 10,
-            dimansion: 30,
-            amplitude: 15,
-            particle: {
-                colorDepth: 1,
-                kf: 0.02
-            }
         }
     };
 
