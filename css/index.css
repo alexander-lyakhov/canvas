@@ -9,6 +9,9 @@ body    {
     position: relative;
 }
 
+a {
+    text-decoration: none;
+}
 
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -19,12 +22,29 @@ body    {
     user-select: none;
 }
 
+.to-home {
+    font: 18px terminal;
+    height: 32px;
+    line-height: 32px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0 8px;
+}
+
+.to-home a {
+    color: #999;
+}
+
+.to-home a:hover {
+    color: #ccc;
+}
+
 canvas {
     background: #000;
 }
 
 .page-list {
-    /*background: #333;*/
     text-align: center;
     width: 100%;
     height: 320px;
@@ -34,7 +54,7 @@ canvas {
 }
 
 .page-list__item {
-    /*background: #066;*/
+    background: #202020;
     box-sizing: border-box;
     width: 256px;
     height: 256px;
@@ -43,23 +63,14 @@ canvas {
 }
 
 .page-list__item a {
-    border: 1px solid #666;
+    border: 2px solid #666;
     width: 100%;
     height: 100%;
     float: left;
 }
 
 .page-list__item a:hover {
-    border: 1px solid #aaa;
-}
-
-.particle {
-    background: #099;
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    left: 100px;
-    top: 0;
+    border: 2px solid #999;
 }
 
 .center {
@@ -68,20 +79,10 @@ canvas {
     top: 50%;
 }
 
-.ripple-aria {
-    background: #000;
-    width: 400px;
-    height: 400px;
-    margin: -200px 0 0 -200px;
-}
 
-.ripple-particle {
-    background: #fff;
-    width: 4px;
-    height: 4px;
-    position: absolute;
-}
-
+/*
+ * Control Panel styles
+ */
 .control-panel {
     background: #333;
     border: 1px solid #666;

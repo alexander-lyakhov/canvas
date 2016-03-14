@@ -47,7 +47,7 @@ window.app = window.app || {};
         {
             this.bindEvents();
 
-            for (var ang = 0; ang < 360; ang += 24) {
+            for (var ang = 0; ang < 360; ang += 30) {
                 vectorAngles.push(ang);
             }
 
@@ -78,17 +78,24 @@ window.app = window.app || {};
                     var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
 
                     if (Math.abs(direction) === 120) {
+                        /*
                         if (direction > 0) {
                             _this.scale(1);
                         } else {
                             _this.scale(-1);
                         }
+                        */
+
+                        direction > 0 ? _this.scale(1):_this.scale(-1);
                     } else {
+                        /*
                         if (direction < 0) {
                             _this.scale(1);
                         } else {
                             _this.scale(-1);
                         }
+                        */
+                        direction < 0 ? _this.scale(1):_this.scale(-1);
                     }
                 })
                 .on('keydown', function(e) {
@@ -129,21 +136,21 @@ window.app = window.app || {};
 
             var vectorRadius = 0;
 
-            for (aroundZangle = rotation; aroundZangle > (rotation - 360); aroundZangle -= 6)
+            for (aroundYangle = rotation; aroundYangle > (rotation - 360); aroundYangle -= 6)
             {
-                var rgb = (160 + Math.floor(80 * Math.cos(aroundZangle * deg))).toString(16);
+                var rgb = (160 + Math.floor(80 * Math.cos(aroundYangle * deg))).toString(16);
                 color = '#'+ rgb + rgb + rgb;
 
                 vectorRadius = Math.round(R * Math.sin(aroundXangle * deg));
 
                 var y = yCenter - Math.round(R * Math.cos(aroundXangle * deg));
-                var x = xCenter + Math.round(vectorRadius * Math.sin(aroundZangle * deg));
+                var x = xCenter + Math.round(vectorRadius * Math.sin(aroundYangle * deg));
 
                 aroundXangle += 3;
 
                 if (backClipping)
                 {
-                    if (Math.cos(aroundZangle * deg) < 0) {
+                    if (Math.cos(aroundYangle * deg) < 0) {
                         color = '#000';
                     }
                 }
