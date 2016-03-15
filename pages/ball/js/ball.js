@@ -2,6 +2,13 @@ window.app = window.app || {};
 
 (function(app, $) {
 
+    app.Particle = function Particle()
+    {
+        if (!(this instanceof Particle)) {
+            return new Particle();
+        }
+    };
+
     /*
      *
      */
@@ -28,6 +35,7 @@ window.app = window.app || {};
         var aroundZangle = 0;
 
         var vectorAngles = [];
+        var yNormalsRadius = [];
         var color = '';
 
         var backClipping = false;
@@ -49,6 +57,10 @@ window.app = window.app || {};
 
             for (var ang = 0; ang < 360; ang += 30) {
                 vectorAngles.push(ang);
+            }
+
+            for (aroundZangle = 0; aroundZangle < 180; aroundZangle += 3) {
+                yNormalsRadius.push(Math.round(R * Math.sin(aroundZangle * deg)));
             }
 
             return this.start();
@@ -78,23 +90,9 @@ window.app = window.app || {};
                     var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
 
                     if (Math.abs(direction) === 120) {
-                        /*
-                        if (direction > 0) {
-                            _this.scale(1);
-                        } else {
-                            _this.scale(-1);
-                        }
-                        */
-
                         direction > 0 ? _this.scale(1):_this.scale(-1);
+
                     } else {
-                        /*
-                        if (direction < 0) {
-                            _this.scale(1);
-                        } else {
-                            _this.scale(-1);
-                        }
-                        */
                         direction < 0 ? _this.scale(1):_this.scale(-1);
                     }
                 })
@@ -132,21 +130,23 @@ window.app = window.app || {};
         //==================================================================================
         this.drawRay = function drawRay(rotation)
         {
-            aroundXangle = 0;
+            aroundZangle = 0;
 
             var vectorRadius = 0;
+            var index = 0;
 
             for (aroundYangle = rotation; aroundYangle > (rotation - 360); aroundYangle -= 6)
             {
                 var rgb = (160 + Math.floor(80 * Math.cos(aroundYangle * deg))).toString(16);
                 color = '#'+ rgb + rgb + rgb;
 
-                vectorRadius = Math.round(R * Math.sin(aroundXangle * deg));
+                //vectorRadius = Math.round(R * Math.sin(aroundZangle * deg));
+                vectorRadius = yNormalsRadius[index++];
 
-                var y = yCenter - Math.round(R * Math.cos(aroundXangle * deg));
+                var y = yCenter - Math.round(R * Math.cos(aroundZangle * deg));
                 var x = xCenter + Math.round(vectorRadius * Math.sin(aroundYangle * deg));
 
-                aroundXangle += 3;
+                aroundZangle += 3;
 
                 if (backClipping)
                 {
