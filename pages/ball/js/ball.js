@@ -8,9 +8,6 @@ window.app = window.app || {};
             return new Particle();
         }
 
-        var xCenter = 0;
-        var yCenter = 0;
-
         var screenX = 0;
         var screenY = 0;
 
@@ -20,17 +17,16 @@ window.app = window.app || {};
         var offsetY = 0;
 
         var color = '';
+        var backClipping = false;
 
         var path = [];
 
         //==================================================================================
         //
         //==================================================================================
-        this.init = function init(x, y)
+        this.enableBackclipping = function enableBackclipping(val)
         {
-            xCenter = x;
-            yCenter = y;
-
+            backClipping = Boolean(val);
             return this;
         };
 
@@ -61,8 +57,6 @@ window.app = window.app || {};
         {
             path.length = 0;
 
-            screenY = offsetY;
-
             for (var i = 0; i < 30; i++)
             {
                 var ang = angle + i * 2;
@@ -70,8 +64,9 @@ window.app = window.app || {};
                 var rgb = (160 + Math.floor(80 * Math.cos(ang * deg))).toString(16);
 
                 path.push({
-                    screenX: xCenter + Math.round(R * Math.sin(ang * deg)),
-                    color: '#'+ rgb + rgb + rgb
+                    x: Math.round(R * Math.sin(ang * deg)),
+                    color: '#'+ rgb + rgb + rgb,
+                    vectorAngle: ang
                 });
             }
 
@@ -83,8 +78,14 @@ window.app = window.app || {};
         //==================================================================================
         this.nextStep = function nextStep()
         {
-            screenX = path[0].screenX;
+            screenX = this.constructor.screenCenter.x + path[0].x;
+            screenY = this.constructor.screenCenter.y - offsetY;
+
             color = path[0].color;
+
+            if (backClipping && Math.cos(path[0].vectorAngle * deg) < 0) {
+                color = '#000';
+            }
 
             path.push(path.shift());
 
@@ -132,10 +133,7 @@ window.app = window.app || {};
         var aroundZangle = 0;
 
         var vectorAngles = [];
-        var yNormalsRadius = [];
         var particles = [];
-
-        var backClipping = false;
 
         var virtualPage = document.createElement('canvas');
             virtualPage.width  = $element.width();
@@ -145,12 +143,18 @@ window.app = window.app || {};
         var virtualCtx = virtualPage.getContext('2d');
             virtualCtx.globalCompositeOperation = 'lighten';
 
+
         //==================================================================================
         //
         //==================================================================================
         this.init = function init()
         {
-            particles.length = 0;
+            this.bindEvents();
+
+            app.Particle.screenCenter = {
+                x: xCenter,
+                y: yCenter
+            };
 
             for (var ang = 0; ang < 360; ang += 30) {
                 vectorAngles.push(ang);
@@ -165,13 +169,12 @@ window.app = window.app || {};
                 for (aroundYangle = rotation; aroundYangle > (rotation - 360); aroundYangle -= 6)
                 {
                     var vectorRadius = Math.round(R * Math.sin(aroundZangle * deg));
-                    var y = yCenter - Math.round(R * Math.cos(aroundZangle * deg));
+                    var y = Math.round(R * Math.cos(aroundZangle * deg));
 
                     aroundZangle += 3;
 
                     var particle = new app.Particle();
                         particle
-                            .init(xCenter, yCenter)
                             .setPolar(vectorRadius, aroundYangle)
                             .setVerticalPosition(y)
                             .prepare();
@@ -179,8 +182,6 @@ window.app = window.app || {};
                     particles.push(particle);
                 }
             }
-
-            this.bindEvents();
 
             return this.rotate();
         };
@@ -192,13 +193,10 @@ window.app = window.app || {};
         {
             var _this = this;
 
-            $(window).on('resize', function() {
+            $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
-                $element[0].width = window.innerWidth;
-                $element[0].height = window.innerHeight - 16;
-
-                xCenter = $element.width()  >> 1;
-                yCenter = $element.height() >> 1;
+            $body.on('renderCompltete', function() {
+                setTimeout($.proxy(_this.rotate, _this), 30);
             });
 
             /*
@@ -222,10 +220,25 @@ window.app = window.app || {};
                     }
                 });
             */
+        };
 
-            $body.on('renderCompltete', function() {
-                setTimeout($.proxy(_this.rotate, _this), 30);
-            });
+        //==================================================================================
+        //
+        //==================================================================================
+        this.resizeWindow = function resizeWindow()
+        {
+            $element[0].width = window.innerWidth;
+            $element[0].height = window.innerHeight - 16;
+
+            xCenter = $element.width()  >> 1;
+            yCenter = $element.height() >> 1;
+
+            app.Particle.screenCenter = {
+                x: xCenter,
+                y: yCenter
+            };
+
+            return this;
         };
 
         //==================================================================================
@@ -245,7 +258,10 @@ window.app = window.app || {};
         //==================================================================================
         this.enableBackclipping = function enableBackclipping(val)
         {
-            backClipping = Boolean(val);
+            particles.forEach(function(item) {
+                item.enableBackclipping(val);
+            });
+
             return this;
         };
 
