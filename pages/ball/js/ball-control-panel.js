@@ -12,6 +12,7 @@
             ball.init();
 
         var $checkboxBackclipping = $element.find('#checkbox-backclipping');
+        var $checkboxClearViewport = $element.find('#checkbox-clear-viewport');
 
         //==================================================================================
         //
@@ -27,6 +28,10 @@
         {
             $checkboxBackclipping.on('change', function(e) {
                 ball.enableBackclipping($(this).is(':checked'));
+            });
+
+            $checkboxClearViewport.on('change', function(e) {
+                ball.cleanViewport($(this).is(':checked'));
             });
         };
     };

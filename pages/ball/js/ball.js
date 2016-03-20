@@ -135,6 +135,8 @@ window.app = window.app || {};
         var vectorAngles = [];
         var particles = [];
 
+        var clearViewport = true;
+
         var virtualPage = document.createElement('canvas');
             virtualPage.width  = $element.width();
             virtualPage.height = $element.height();
@@ -277,9 +279,18 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.cleanViewport = function cleanViewport(val)
+        {
+        	clearViewport = Boolean(val);
+        	return this;
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.render = function render()
         {
-            this.clear(visibleCtx);
+            clearViewport && this.clear(visibleCtx);
 
             visibleCtx.drawImage(virtualPage, 0, 0);
 
