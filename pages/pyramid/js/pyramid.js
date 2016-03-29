@@ -12,7 +12,14 @@ window.app = window.app || {};
         }
 
         var DEFAULT_SPHERE_RADIUS = 200;
-        var KEY_HOME = 36;
+
+        var KEY = {
+            HOME:  36,
+            LEFT:  37,
+            RIGHT: 39,
+            UP:    38,
+            DOWN:  40
+        };
 
         var $body = $('body');
 
@@ -26,9 +33,12 @@ window.app = window.app || {};
         var deg = Math.PI / 180;
         var f = 1600; // k = f / (f + item.z);
 
-        var aroundX = 3;
-        var aroundY = 3;
+        var aroundX = 0;
+        var aroundY = 0;
         var aroundZ = 0;
+
+        var rotate = false;
+        var rotateStep = 6;
 
         var shape =
         {
@@ -53,20 +63,6 @@ window.app = window.app || {};
         var visibleCtx = $element[0].getContext('2d');
         var virtualCtx = virtualPage.getContext('2d');
             //virtualCtx.globalCompositeOperation = 'lighten';
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.bindEvents = function bindEvents()
-        {
-            var _this = this;
-
-            $(window).on('resize', $.proxy(_this.resizeWindow, _this));
-
-            $body.on('renderCompltete', function() {
-                setTimeout($.proxy(_this.rotate, _this), 30);
-            });
-        };
 
         //==================================================================================
         //
@@ -113,6 +109,72 @@ window.app = window.app || {};
         };
 
         //==================================================================================
+        //
+        //==================================================================================
+        this.bindEvents = function bindEvents()
+        {
+            var _this = this;
+
+            var x = 0;
+            var y = 0;
+
+            $(window).on('resize', $.proxy(_this.resizeWindow, _this));
+
+            $body
+                .on('renderCompltete', function() {
+                    setTimeout($.proxy(_this.rotate, _this), 30);
+                })
+                .on('mousedown', function(e) {
+                    rotate = 1;
+                    x = e.clientX;
+                    y = e.clientY;
+                })
+                .on('mousemove', function(e)
+                {
+                    if (rotate) {
+                        aroundY = (e.clientX - x) >> 1;
+                        aroundX = (e.clientY - y) >> 1;
+
+                        x = e.clientX;
+                        y = e.clientY;
+
+                        _this.rotate();
+                    }
+                })
+                .on('mouseup', function() {
+                    rotate = 0;
+                })
+                .on('keydown', function(e)
+                {
+                    if (e.keyCode < 36 || e.keyCode > 40) {
+                        return;
+                    }
+
+                    if (e.keyCode === KEY.LEFT) {
+                        aroundX = 0;
+                        aroundY = rotateStep;
+                    }
+
+                    if (e.keyCode === KEY.RIGHT) {
+                        aroundX = 0;
+                        aroundY = -rotateStep;
+                    }
+
+                    if (e.keyCode === KEY.UP) {
+                        aroundX = rotateStep;
+                        aroundY = 0;
+                    }
+
+                    if (e.keyCode === KEY.DOWN) {
+                        aroundX = -rotateStep;
+                        aroundY = 0;
+                    }
+
+                    _this.rotate();
+                });
+        };
+
+        //==================================================================================
         // b * c = {by * cz - bz * cy;  bz * cx - bx * cz;  bx * cy - by * cx}
         //==================================================================================
         this.getNormal = function getNormal(polygon)
@@ -147,21 +209,25 @@ window.app = window.app || {};
         //==================================================================================
         this.rotate = function rotate()
         {
+            var cos_ay = Math.cos(aroundY * deg);
+            var sin_ay = Math.sin(aroundY * deg);
+
+            var cos_ax = Math.cos(aroundX * deg);
+            var sin_ax = Math.sin(aroundX * deg);
+
             shape.vertexes.forEach(function(vertex)
             {
-                var z = vertex.z * Math.cos(aroundY * deg) + vertex.x * Math.sin(aroundY * deg);
-                var x = -vertex.z * Math.sin(aroundY * deg) + vertex.x * Math.cos(aroundY * deg);
+                var z =  vertex.z * cos_ay + vertex.x * sin_ay;
+                var x = -vertex.z * sin_ay + vertex.x * cos_ay;
 
                 vertex.x = x;
                 vertex.z = z;
 
-                /*
-                var z = vertex.z * Math.cos(aroundX * deg) - vertex.y * Math.sin(aroundX * deg);
-                var y = vertex.z * Math.sin(aroundX * deg) + vertex.y * Math.cos(aroundX * deg);
+                var z = vertex.z * cos_ax - vertex.y * sin_ax;
+                var y = vertex.z * sin_ax + vertex.y * cos_ax;
 
                 vertex.y = y;
                 vertex.z = z;
-                */
 
                 vertex.k = f / (f + vertex.z);
             });
@@ -248,7 +314,7 @@ window.app = window.app || {};
 
             this.clear(virtualCtx);
 
-            $body.trigger('renderCompltete');
+            //$body.trigger('renderCompltete');
 
             return this;
         };
