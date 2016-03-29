@@ -105,7 +105,8 @@ window.app = window.app || {};
 
             console.log(shape);
 
-            return this.draw(virtualCtx);
+            //return this.draw(virtualCtx);
+            return this.rotate();
         };
 
         //==================================================================================
