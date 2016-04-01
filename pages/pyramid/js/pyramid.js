@@ -79,8 +79,10 @@ window.app = window.app || {};
                     x: Math.cos(vector.aroundY * deg),
                     y: Math.sin(vector.aroundX * deg),
                     z: Math.cos(vector.aroundX * deg) * Math.sin(vector.aroundY * deg),
+                    k: 1
                 });
             });
+
 
             polygons.push(
                 [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
@@ -95,8 +97,8 @@ window.app = window.app || {};
 
             console.log(shape);
 
-            //return this.draw(virtualCtx);
-            return this.rotate();
+            return this.draw(virtualCtx);
+            //return this.rotate();
         };
 
         //==================================================================================
@@ -200,6 +202,8 @@ window.app = window.app || {};
 
                 vertex.y = y;
                 vertex.z = z;
+
+                vertex.k = f / (f + vertex.z);
             });
 
             for (var i = 0; i < polygons.length; i++) {
@@ -210,30 +214,30 @@ window.app = window.app || {};
         };
 
         //==================================================================================
-        // b * c = {by * cz - bz * cy;  bz * cx - bx * cz;  bx * cy - by * cx}
+        // a * b = {ay * bz - az * by;  az * bx - ax * bz;  ax * by - ay * bx}
         //==================================================================================
         this.getNormal = function getNormal(polygon)
         {
             var A = polygon[0];
-            var B = polygon[1];
-            var C = polygon[2];
+            var O = polygon[1];
+            var B = polygon[2];
 
-            var b = {
-                x: B.x - A.x,
-                y: B.y - A.y,
-                z: B.z - A.z
+            var a = {
+                x: A.x - O.x,
+                y: A.y - O.y,
+                z: A.z - O.z
             };
 
-            var c = {
-                x: C.x - A.x,
-                y: C.y - A.y,
-                z: C.z - A.z
+            var b = {
+                x: B.x - O.x,
+                y: B.y - O.y,
+                z: B.z - O.z
             };
 
             var normal = {
-                //dx: b.y * c.z - b.z * c.y,
-                //dy: b.z * c.x - b.x * c.z,
-                dz: b.x * c.y - b.y * c.x
+                dx: a.y * b.z - a.z * b.y,
+                dy: a.z * b.x - a.x * b.z,
+                dz: a.x * b.y - a.y * b.x
             };
 
             return normal;
@@ -259,7 +263,7 @@ window.app = window.app || {};
             shape.vertexes.forEach(function(vertex)
             {
 
-                var k = vertex.k = f / (f + vertex.z * R);
+                var k = vertex.k;
 
                 var x = Math.round(k * R * vertex.x);
                 var y = Math.round(k * R * vertex.y);
@@ -279,7 +283,7 @@ window.app = window.app || {};
                 ctx.fillStyle = colors[index];
                 ctx.beginPath();
 
-                if (shape.normals[index].dz < 0)
+                if (shape.normals[index].dz > 0)
                 {
                     for (var i = 0; i < polygon.length; i++)
                     {
