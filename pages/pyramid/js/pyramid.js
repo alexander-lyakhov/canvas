@@ -33,20 +33,20 @@ window.app = window.app || {};
         var deg = Math.PI / 180;
         var f = 1600; // k = f / (f + item.z);
 
-        var aroundX = 0;
-        var aroundY = 0;
-        var aroundZ = 0;
+        var rotateZY = 0;
+        var rotateXZ = 0;
+        var rotateXY = 0;
 
         var rotate = false;
-        var rotateStep = 6;
+        var rotateStep = 3;
 
         var shape =
         {
             vectors: [
-                {aroundX: -30, aroundY: 90,  aroundZ: 0},
-                {aroundX: -30, aroundY: 210, aroundZ: 0},
-                {aroundX: -30, aroundY: 330, aroundZ: 0},
-                {aroundX:  90, aroundY: 90,  aroundZ: 0}
+                {rotateXY: 330, rotateXZ: 90,  rotateZY: 0},
+                {rotateXY: 330, rotateXZ: 210, rotateZY: 0},
+                {rotateXY: 330, rotateXZ: 330, rotateZY: 0},
+                {rotateXY:  90, rotateXZ: 90,  rotateZY: 0}
             ],
             vertexes: [],
             normals:  []
@@ -75,13 +75,23 @@ window.app = window.app || {};
 
             shape.vectors.forEach(function(vector)
             {
+                var x0 = Math.cos(vector.rotateXY * deg);
+
+                var x = x0 * Math.cos(vector.rotateXZ * deg);
+                var y =  1 * Math.sin(vector.rotateXY * deg);
+                var z = x0 * Math.sin(vector.rotateXZ * deg);
+
                 shape.vertexes.push({
-                    x: R * Math.cos(vector.aroundY * deg),
-                    y: R * Math.sin(vector.aroundX * deg),
-                    z: R * Math.cos(vector.aroundX * deg) * Math.sin(vector.aroundY * deg),
+                    x0: x,
+                    y0: y,
+                    z0: z,
+                    x:  x,
+                    y:  y,
+                    z:  z,
                     k: 1
                 });
             });
+
 
             polygons.push(
                 [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
@@ -90,18 +100,9 @@ window.app = window.app || {};
                 [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
             );
 
-            /*
             polygons.forEach(function(polygon) {
                 shape.normals.push(_this.getNormal(polygon));
             });
-            */
-
-            shape.normals.push(
-                this.getNormal(polygons[0]),
-                this.getNormal(polygons[1]),
-                this.getNormal(polygons[2]),
-                this.getNormal(polygons[3])
-            );
 
             console.log(shape);
 
@@ -133,8 +134,8 @@ window.app = window.app || {};
                 .on('mousemove', function(e)
                 {
                     if (rotate) {
-                        aroundY = (e.clientX - x) >> 1;
-                        aroundX = (e.clientY - y) >> 1;
+                        rotateXZ = rotateXZ + ((e.clientX - x) >> 1) % 360;
+                        rotateZY = rotateZY + ((e.clientY - y) >> 1) % 360;
 
                         x = e.clientX;
                         y = e.clientY;
@@ -145,6 +146,17 @@ window.app = window.app || {};
                 .on('mouseup', function() {
                     rotate = 0;
                 })
+                .on('mousewheel DOMMouseScroll', function(e)
+                {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
+
+                    Math.abs(direction) === 120 ?
+                        direction > 0 ? _this.scale(1):_this.scale(-1):
+                        direction < 0 ? _this.scale(1):_this.scale(-1);
+                })
                 .on('keydown', function(e)
                 {
                     if (e.keyCode < 36 || e.keyCode > 40) {
@@ -152,23 +164,23 @@ window.app = window.app || {};
                     }
 
                     if (e.keyCode === KEY.LEFT) {
-                        aroundX = 0;
-                        aroundY = rotateStep;
+                        //rotateZY = 0;
+                        rotateXZ = (rotateXZ + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.RIGHT) {
-                        aroundX = 0;
-                        aroundY = -rotateStep;
+                        //rotateZY = 0;
+                        rotateXZ = (rotateXZ - rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.UP) {
-                        aroundX = rotateStep;
-                        aroundY = 0;
+                        rotateZY = (rotateZY + rotateStep) % 360;
+                        //rotateXZ = 0;
                     }
 
                     if (e.keyCode === KEY.DOWN) {
-                        aroundX = -rotateStep;
-                        aroundY = 0;
+                        rotateZY = (rotateZY - rotateStep) % 360;
+                        //rotateXZ = 0;
                     }
 
                     _this.rotate();
@@ -176,30 +188,68 @@ window.app = window.app || {};
         };
 
         //==================================================================================
-        // b * c = {by * cz - bz * cy;  bz * cx - bx * cz;  bx * cy - by * cx}
+        //
+        //==================================================================================
+        this.rotate = function rotate()
+        {
+            //rotateXZ  = (rotateXZ + 3) % 360;
+            //rotateZY  = (rotateZY + 3) % 360;
+
+            var cos_ay = Math.cos(rotateXZ * deg);
+            var sin_ay = Math.sin(rotateXZ * deg);
+
+            var cos_ax = Math.cos(rotateZY * deg);
+            var sin_ax = Math.sin(rotateZY * deg);
+
+            shape.vertexes.forEach(function(vertex)
+            {
+                var z =  vertex.z0 * cos_ay + vertex.x0 * sin_ay;
+                var x = -vertex.z0 * sin_ay + vertex.x0 * cos_ay;
+
+                vertex.x = x;
+                vertex.z = z;
+
+                var z = vertex.z * cos_ax - vertex.y0 * sin_ax;
+                var y = vertex.z * sin_ax + vertex.y0 * cos_ax;
+
+                vertex.y = y;
+                vertex.z = z;
+
+                vertex.k = f / (f + vertex.z * R);
+            });
+
+            for (var i = 0; i < polygons.length; i++) {
+                shape.normals[i] = this.getNormal(polygons[i]);
+            };
+
+            return this.draw(virtualCtx);
+        };
+
+        //==================================================================================
+        // a * b = {ay * bz - az * by;  az * bx - ax * bz;  ax * by - ay * bx}
         //==================================================================================
         this.getNormal = function getNormal(polygon)
         {
             var A = polygon[0];
-            var B = polygon[1];
-            var C = polygon[2];
+            var O = polygon[1];
+            var B = polygon[2];
 
-            var b = {
-                x: B.x - A.x,
-                y: B.y - A.y,
-                z: B.z - A.z
+            var a = {
+                x: A.x * A.k - O.x * O.k,
+                y: A.y * A.k - O.y * O.k,
+                z: A.z * A.k - O.z * O.k
             };
 
-            var c = {
-                x: C.x - A.x,
-                y: C.y - A.y,
-                z: C.z - A.z
+            var b = {
+                x: B.x * B.k - O.x * O.k,
+                y: B.y * B.k - O.y * O.k,
+                z: B.z * B.k - O.z * O.k
             };
 
             var normal = {
-                //dx: b.y * c.z - b.z * c.y,
-                //dy: b.z * c.x - b.x * c.z,
-                dz: b.x * c.y - b.y * c.x
+                //dx: a.y * b.z - a.z * b.y,
+                //dy: a.z * b.x - a.x * b.z,
+                dz: a.x * b.y - a.y * b.x
             };
 
             return normal;
@@ -208,35 +258,9 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
-        this.rotate = function rotate()
+        this.scale = function scale(val)
         {
-            var cos_ay = Math.cos(aroundY * deg);
-            var sin_ay = Math.sin(aroundY * deg);
-
-            var cos_ax = Math.cos(aroundX * deg);
-            var sin_ax = Math.sin(aroundX * deg);
-
-            shape.vertexes.forEach(function(vertex)
-            {
-                var z =  vertex.z * cos_ay + vertex.x * sin_ay;
-                var x = -vertex.z * sin_ay + vertex.x * cos_ay;
-
-                vertex.x = x;
-                vertex.z = z;
-
-                var z = vertex.z * cos_ax - vertex.y * sin_ax;
-                var y = vertex.z * sin_ax + vertex.y * cos_ax;
-
-                vertex.y = y;
-                vertex.z = z;
-
-                vertex.k = f / (f + vertex.z);
-            });
-
-            for (var i = 0; i < polygons.length; i++) {
-                shape.normals[i] = this.getNormal(polygons[i]);
-            };
-
+            R += R / (val << 4);
             return this.draw(virtualCtx);
         };
 
@@ -248,12 +272,13 @@ window.app = window.app || {};
             var x0 = xCenter;
             var y0 = yCenter;
 
-            shape.vertexes.forEach(function(item)
+            shape.vertexes.forEach(function(vertex)
             {
-                var k = item.k;
 
-                var x = Math.round(k * item.x);
-                var y = Math.round(k * item.y);
+                var k = vertex.k;
+
+                var x = Math.round(k * vertex.x * R);
+                var y = Math.round(k * vertex.y * R);
 
                 ctx.fillStyle = '#fff';
                 ctx.moveTo(x0 + x, y0 - y);
@@ -270,15 +295,15 @@ window.app = window.app || {};
                 ctx.fillStyle = colors[index];
                 ctx.beginPath();
 
-                if (shape.normals[index].dz < 0)
+                if (shape.normals[index].dz > 0)
                 {
                     for (var i = 0; i < polygon.length; i++)
                     {
                         k = polygon[i].k;
 
                         i === 0 ?
-                            ctx.moveTo(x0 + Math.round(k * polygon[i].x), y0 - Math.round(k * polygon[i].y)):
-                            ctx.lineTo(x0 + Math.round(k * polygon[i].x), y0 - Math.round(k * polygon[i].y));
+                            ctx.moveTo(x0 + Math.round(k * R * polygon[i].x), y0 - Math.round(k * R * polygon[i].y)):
+                            ctx.lineTo(x0 + Math.round(k * R * polygon[i].x), y0 - Math.round(k * R * polygon[i].y));
                     }
 
                     ctx.fill();
