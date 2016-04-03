@@ -23,7 +23,7 @@ window.app = window.app || {};
 
         var $body = $('body');
 
-        $element[0].width = window.innerWidth;
+        $element[0].width  = window.innerWidth;
         $element[0].height = window.innerHeight - 16;
 
         var xCenter = $element.width()  >> 1;
