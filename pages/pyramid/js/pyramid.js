@@ -29,13 +29,8 @@ window.app = window.app || {};
         var xCenter = $element.width()  >> 1;
         var yCenter = $element.height() >> 1;
 
-        var R = DEFAULT_SPHERE_RADIUS;
         var deg = Math.PI / 180;
         var f = 1600; // k = f / (f + item.z);
-
-        var rotateZY = 0;
-        var rotateZX = 0;
-        var rotateXY = 0;
 
         var rotate = false;
         var rotateStep = 6;
@@ -49,7 +44,11 @@ window.app = window.app || {};
                 {rotateXY:  90, rotateZX: 90,  rotateZY: 0}
             ],
             vertexes: [],
-            normals:  []
+            normals:  [],
+            rotateZY: 0,
+            rotateZX: 0,
+            rotateXY: 0,
+            R: DEFAULT_SPHERE_RADIUS
         };
 
         var polygons = [];
@@ -90,8 +89,8 @@ window.app = window.app || {};
                 .on('mousemove', function(e)
                 {
                     if (rotate) {
-                        rotateZX = rotateZX + ((e.clientX - x) >> 1) % 360;
-                        rotateZY = rotateZY + ((e.clientY - y) >> 1) % 360;
+                        shape.rotateZX = shape.rotateZX + ((e.clientX - x) >> 1) % 360;
+                        shape.rotateZY = shape.rotateZY + ((e.clientY - y) >> 1) % 360;
 
                         x = e.clientX;
                         y = e.clientY;
@@ -120,19 +119,19 @@ window.app = window.app || {};
                     }
 
                     if (e.keyCode === KEY.LEFT) {
-                        rotateZX = (rotateZX + rotateStep) % 360;
+                        shape.rotateZX = (shape.rotateZX + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.RIGHT) {
-                        rotateZX = (rotateZX - rotateStep) % 360;
+                        shape.rotateZX = (shape.rotateZX - rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.UP) {
-                        rotateZY = (rotateZY + rotateStep) % 360;
+                        shape.rotateZY = (shape.rotateZY + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.DOWN) {
-                        rotateZY = (rotateZY - rotateStep) % 360;
+                        shape.rotateZY = (shape.rotateZY - rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.HOME) {
@@ -193,21 +192,21 @@ window.app = window.app || {};
         //==================================================================================
         this.reset = function reset()
         {
-            /*
-            shape.vertexes.forEach(function(vertex) {
-                vertex.x = vertex.x0;
-                vertex.y = vertex.y0;
-                vertex.z = vertex.z0;
+            var _this = this;
+
+            $(shape).animate({
+
+                R: DEFAULT_SPHERE_RADIUS,
+                rotateZX: 0,
+                rotateZY: 0,
+                rotateXY: 0
+                }, {
+
+                duration: 800,
+                step: function(now, fx) {
+                    _this.rotate();
+                }
             });
-
-            for (var i = 0; i < polygons.length; i++) {
-                shape.normals[i] = this.getNormal(polygons[i]);
-            };
-
-            rotateXY = rotateZX = rotateZY = 0;
-            */
-
-            R = DEFAULT_SPHERE_RADIUS;
 
             return this.draw(virtualCtx);
         };
@@ -220,11 +219,11 @@ window.app = window.app || {};
             //rotateZX  = (rotateZX + 3) % 360;
             //rotateZY  = (rotateZY + 3) % 360;
 
-            var cos_ay = Math.cos(rotateZX * deg);
-            var sin_ay = Math.sin(rotateZX * deg);
+            var cos_ay = Math.cos(shape.rotateZX * deg);
+            var sin_ay = Math.sin(shape.rotateZX * deg);
 
-            var cos_ax = Math.cos(rotateZY * deg);
-            var sin_ax = Math.sin(rotateZY * deg);
+            var cos_ax = Math.cos(shape.rotateZY * deg);
+            var sin_ax = Math.sin(shape.rotateZY * deg);
 
             shape.vertexes.forEach(function(vertex)
             {
@@ -239,8 +238,6 @@ window.app = window.app || {};
 
                 vertex.y = y;
                 vertex.z = z;
-
-                //vertex.k = f / (f + vertex.z * R);
             });
 
             for (var i = 0; i < polygons.length; i++) {
@@ -285,7 +282,7 @@ window.app = window.app || {};
         //==================================================================================
         this.scale = function scale(val)
         {
-            R += R / (val << 4);
+            shape.R += shape.R / (val << 4);
             return this.draw(virtualCtx);
         };
 
@@ -297,10 +294,11 @@ window.app = window.app || {};
             var x0 = xCenter;
             var y0 = yCenter;
 
+            var R = shape.R;
+
             shape.vertexes.forEach(function(vertex)
             {
-                //var k = vertex.k;
-                k = vertex.k = f / (f + vertex.z * R);
+                var k = vertex.k = f / (f + vertex.z * R);
 
                 var x = Math.round(k * vertex.x * R);
                 var y = Math.round(k * vertex.y * R);
