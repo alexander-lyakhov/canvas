@@ -29,27 +29,26 @@ window.app = window.app || {};
         var xCenter = $element.width()  >> 1;
         var yCenter = $element.height() >> 1;
 
-        var R = DEFAULT_SPHERE_RADIUS;
         var deg = Math.PI / 180;
         var f = 1600; // k = f / (f + item.z);
 
-        var rotateZY = 0;
-        var rotateXZ = 0;
-        var rotateXY = 0;
-
         var rotate = false;
-        var rotateStep = 3;
+        var rotateStep = 6;
 
         var shape =
         {
             vectors: [
-                {rotateXY: 330, rotateXZ: 90,  rotateZY: 0},
-                {rotateXY: 330, rotateXZ: 210, rotateZY: 0},
-                {rotateXY: 330, rotateXZ: 330, rotateZY: 0},
-                {rotateXY:  90, rotateXZ: 90,  rotateZY: 0}
+                {rotateXY: 330, rotateZX: 90,  rotateZY: 0},
+                {rotateXY: 330, rotateZX: 210, rotateZY: 0},
+                {rotateXY: 330, rotateZX: 330, rotateZY: 0},
+                {rotateXY:  90, rotateZX: 90,  rotateZY: 0}
             ],
             vertexes: [],
-            normals:  []
+            normals:  [],
+            rotateZY: 0,
+            rotateZX: 0,
+            rotateXY: 0,
+            R: DEFAULT_SPHERE_RADIUS
         };
 
         var polygons = [];
@@ -67,52 +66,6 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
-        this.init = function init()
-        {
-            var _this = this;
-
-            this.bindEvents();
-
-            shape.vectors.forEach(function(vector)
-            {
-                var x0 = Math.cos(vector.rotateXY * deg);
-
-                var x = x0 * Math.cos(vector.rotateXZ * deg);
-                var y =  1 * Math.sin(vector.rotateXY * deg);
-                var z = x0 * Math.sin(vector.rotateXZ * deg);
-
-                shape.vertexes.push({
-                    x0: x,
-                    y0: y,
-                    z0: z,
-                    x:  x,
-                    y:  y,
-                    z:  z,
-                    k: 1
-                });
-            });
-
-
-            polygons.push(
-                [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
-                [shape.vertexes[0], shape.vertexes[3], shape.vertexes[1]],
-                [shape.vertexes[1], shape.vertexes[3], shape.vertexes[2]],
-                [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
-            );
-
-            polygons.forEach(function(polygon) {
-                shape.normals.push(_this.getNormal(polygon));
-            });
-
-            console.log(shape);
-
-            //return this.draw(virtualCtx);
-            return this.rotate();
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
         this.bindEvents = function bindEvents()
         {
             var _this = this;
@@ -123,9 +76,11 @@ window.app = window.app || {};
             $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
             $body
+                /*
                 .on('renderCompltete', function() {
                     setTimeout($.proxy(_this.rotate, _this), 30);
                 })
+                */
                 .on('mousedown', function(e) {
                     rotate = 1;
                     x = e.clientX;
@@ -134,8 +89,8 @@ window.app = window.app || {};
                 .on('mousemove', function(e)
                 {
                     if (rotate) {
-                        rotateXZ = rotateXZ + ((e.clientX - x) >> 1) % 360;
-                        rotateZY = rotateZY + ((e.clientY - y) >> 1) % 360;
+                        shape.rotateZX = shape.rotateZX + ((e.clientX - x) >> 1) % 360;
+                        shape.rotateZY = shape.rotateZY + ((e.clientY - y) >> 1) % 360;
 
                         x = e.clientX;
                         y = e.clientY;
@@ -164,23 +119,23 @@ window.app = window.app || {};
                     }
 
                     if (e.keyCode === KEY.LEFT) {
-                        //rotateZY = 0;
-                        rotateXZ = (rotateXZ + rotateStep) % 360;
+                        shape.rotateZX = (shape.rotateZX + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.RIGHT) {
-                        //rotateZY = 0;
-                        rotateXZ = (rotateXZ - rotateStep) % 360;
+                        shape.rotateZX = (shape.rotateZX - rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.UP) {
-                        rotateZY = (rotateZY + rotateStep) % 360;
-                        //rotateXZ = 0;
+                        shape.rotateZY = (shape.rotateZY + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.DOWN) {
-                        rotateZY = (rotateZY - rotateStep) % 360;
-                        //rotateXZ = 0;
+                        shape.rotateZY = (shape.rotateZY - rotateStep) % 360;
+                    }
+
+                    if (e.keyCode === KEY.HOME) {
+                        _this.reset();
                     }
 
                     _this.rotate();
@@ -190,16 +145,85 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.init = function init()
+        {
+            var _this = this;
+
+            this.bindEvents();
+
+            shape.vectors.forEach(function(vector)
+            {
+                var x0 = Math.cos(vector.rotateXY * deg);
+
+                var x = x0 * Math.cos(vector.rotateZX * deg);
+                var y =  1 * Math.sin(vector.rotateXY * deg);
+                var z = x0 * Math.sin(vector.rotateZX * deg);
+
+                shape.vertexes.push({
+                    x0: x,
+                    y0: y,
+                    z0: z,
+                    x:  x,
+                    y:  y,
+                    z:  z,
+                    k: 1
+                });
+            });
+
+            polygons.push(
+                [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
+                [shape.vertexes[0], shape.vertexes[3], shape.vertexes[1]],
+                [shape.vertexes[1], shape.vertexes[3], shape.vertexes[2]],
+                [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
+            );
+
+            polygons.forEach(function(polygon) {
+                shape.normals.push(_this.getNormal(polygon));
+            });
+
+            console.log(shape);
+
+            return this.draw(virtualCtx);
+            //return this.rotate();
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.reset = function reset()
+        {
+            var _this = this;
+
+            $(shape).animate({
+
+                R: DEFAULT_SPHERE_RADIUS,
+                rotateZX: 0,
+                rotateZY: 0,
+                rotateXY: 0
+                }, {
+
+                duration: 800,
+                step: function(now, fx) {
+                    _this.rotate();
+                }
+            });
+
+            return this.draw(virtualCtx);
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.rotate = function rotate()
         {
-            //rotateXZ  = (rotateXZ + 3) % 360;
+            //rotateZX  = (rotateZX + 3) % 360;
             //rotateZY  = (rotateZY + 3) % 360;
 
-            var cos_ay = Math.cos(rotateXZ * deg);
-            var sin_ay = Math.sin(rotateXZ * deg);
+            var cos_ay = Math.cos(shape.rotateZX * deg);
+            var sin_ay = Math.sin(shape.rotateZX * deg);
 
-            var cos_ax = Math.cos(rotateZY * deg);
-            var sin_ax = Math.sin(rotateZY * deg);
+            var cos_ax = Math.cos(shape.rotateZY * deg);
+            var sin_ax = Math.sin(shape.rotateZY * deg);
 
             shape.vertexes.forEach(function(vertex)
             {
@@ -214,13 +238,11 @@ window.app = window.app || {};
 
                 vertex.y = y;
                 vertex.z = z;
-
-                vertex.k = f / (f + vertex.z * R);
             });
 
             for (var i = 0; i < polygons.length; i++) {
                 shape.normals[i] = this.getNormal(polygons[i]);
-            };
+            }
 
             return this.draw(virtualCtx);
         };
@@ -253,14 +275,14 @@ window.app = window.app || {};
             };
 
             return normal;
-        }
+        };
 
         //==================================================================================
         //
         //==================================================================================
         this.scale = function scale(val)
         {
-            R += R / (val << 4);
+            shape.R += shape.R / (val << 4);
             return this.draw(virtualCtx);
         };
 
@@ -272,10 +294,11 @@ window.app = window.app || {};
             var x0 = xCenter;
             var y0 = yCenter;
 
+            var R = shape.R;
+
             shape.vertexes.forEach(function(vertex)
             {
-
-                var k = vertex.k;
+                var k = vertex.k = f / (f + vertex.z * R);
 
                 var x = Math.round(k * vertex.x * R);
                 var y = Math.round(k * vertex.y * R);
@@ -340,7 +363,7 @@ window.app = window.app || {};
 
             this.clear(virtualCtx);
 
-            //$body.trigger('renderCompltete');
+            $body.trigger('renderCompltete');
 
             return this;
         };
