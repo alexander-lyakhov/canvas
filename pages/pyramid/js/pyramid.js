@@ -34,19 +34,19 @@ window.app = window.app || {};
         var f = 1600; // k = f / (f + item.z);
 
         var rotateZY = 0;
-        var rotateXZ = 0;
+        var rotateZX = 0;
         var rotateXY = 0;
 
         var rotate = false;
-        var rotateStep = 3;
+        var rotateStep = 6;
 
         var shape =
         {
             vectors: [
-                {rotateXY: 330, rotateXZ: 90,  rotateZY: 0},
-                {rotateXY: 330, rotateXZ: 210, rotateZY: 0},
-                {rotateXY: 330, rotateXZ: 330, rotateZY: 0},
-                {rotateXY:  90, rotateXZ: 90,  rotateZY: 0}
+                {rotateXY: 330, rotateZX: 90,  rotateZY: 0},
+                {rotateXY: 330, rotateZX: 210, rotateZY: 0},
+                {rotateXY: 330, rotateZX: 330, rotateZY: 0},
+                {rotateXY:  90, rotateZX: 90,  rotateZY: 0}
             ],
             vertexes: [],
             normals:  []
@@ -67,52 +67,6 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
-        this.init = function init()
-        {
-            var _this = this;
-
-            this.bindEvents();
-
-            shape.vectors.forEach(function(vector)
-            {
-                var x0 = Math.cos(vector.rotateXY * deg);
-
-                var x = x0 * Math.cos(vector.rotateXZ * deg);
-                var y =  1 * Math.sin(vector.rotateXY * deg);
-                var z = x0 * Math.sin(vector.rotateXZ * deg);
-
-                shape.vertexes.push({
-                    x0: x,
-                    y0: y,
-                    z0: z,
-                    x:  x,
-                    y:  y,
-                    z:  z,
-                    k: 1
-                });
-            });
-
-
-            polygons.push(
-                [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
-                [shape.vertexes[0], shape.vertexes[3], shape.vertexes[1]],
-                [shape.vertexes[1], shape.vertexes[3], shape.vertexes[2]],
-                [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
-            );
-
-            polygons.forEach(function(polygon) {
-                shape.normals.push(_this.getNormal(polygon));
-            });
-
-            console.log(shape);
-
-            //return this.draw(virtualCtx);
-            return this.rotate();
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
         this.bindEvents = function bindEvents()
         {
             var _this = this;
@@ -123,9 +77,11 @@ window.app = window.app || {};
             $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
             $body
+                /*
                 .on('renderCompltete', function() {
                     setTimeout($.proxy(_this.rotate, _this), 30);
                 })
+                */
                 .on('mousedown', function(e) {
                     rotate = 1;
                     x = e.clientX;
@@ -134,7 +90,7 @@ window.app = window.app || {};
                 .on('mousemove', function(e)
                 {
                     if (rotate) {
-                        rotateXZ = rotateXZ + ((e.clientX - x) >> 1) % 360;
+                        rotateZX = rotateZX + ((e.clientX - x) >> 1) % 360;
                         rotateZY = rotateZY + ((e.clientY - y) >> 1) % 360;
 
                         x = e.clientX;
@@ -164,23 +120,23 @@ window.app = window.app || {};
                     }
 
                     if (e.keyCode === KEY.LEFT) {
-                        //rotateZY = 0;
-                        rotateXZ = (rotateXZ + rotateStep) % 360;
+                        rotateZX = (rotateZX + rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.RIGHT) {
-                        //rotateZY = 0;
-                        rotateXZ = (rotateXZ - rotateStep) % 360;
+                        rotateZX = (rotateZX - rotateStep) % 360;
                     }
 
                     if (e.keyCode === KEY.UP) {
                         rotateZY = (rotateZY + rotateStep) % 360;
-                        //rotateXZ = 0;
                     }
 
                     if (e.keyCode === KEY.DOWN) {
                         rotateZY = (rotateZY - rotateStep) % 360;
-                        //rotateXZ = 0;
+                    }
+
+                    if (e.keyCode === KEY.HOME) {
+                        _this.reset();
                     }
 
                     _this.rotate();
@@ -190,13 +146,82 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.init = function init()
+        {
+            var _this = this;
+
+            this.bindEvents();
+
+            shape.vectors.forEach(function(vector)
+            {
+                var x0 = Math.cos(vector.rotateXY * deg);
+
+                var x = x0 * Math.cos(vector.rotateZX * deg);
+                var y =  1 * Math.sin(vector.rotateXY * deg);
+                var z = x0 * Math.sin(vector.rotateZX * deg);
+
+                shape.vertexes.push({
+                    x0: x,
+                    y0: y,
+                    z0: z,
+                    x:  x,
+                    y:  y,
+                    z:  z,
+                    k: 1
+                });
+            });
+
+            polygons.push(
+                [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
+                [shape.vertexes[0], shape.vertexes[3], shape.vertexes[1]],
+                [shape.vertexes[1], shape.vertexes[3], shape.vertexes[2]],
+                [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
+            );
+
+            polygons.forEach(function(polygon) {
+                shape.normals.push(_this.getNormal(polygon));
+            });
+
+            console.log(shape);
+
+            return this.draw(virtualCtx);
+            //return this.rotate();
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.reset = function reset()
+        {
+            /*
+            shape.vertexes.forEach(function(vertex) {
+                vertex.x = vertex.x0;
+                vertex.y = vertex.y0;
+                vertex.z = vertex.z0;
+            });
+
+            for (var i = 0; i < polygons.length; i++) {
+                shape.normals[i] = this.getNormal(polygons[i]);
+            };
+
+            rotateXY = rotateZX = rotateZY = 0;
+            */
+
+            R = DEFAULT_SPHERE_RADIUS;
+
+            return this.draw(virtualCtx);
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.rotate = function rotate()
         {
-            //rotateXZ  = (rotateXZ + 3) % 360;
+            //rotateZX  = (rotateZX + 3) % 360;
             //rotateZY  = (rotateZY + 3) % 360;
 
-            var cos_ay = Math.cos(rotateXZ * deg);
-            var sin_ay = Math.sin(rotateXZ * deg);
+            var cos_ay = Math.cos(rotateZX * deg);
+            var sin_ay = Math.sin(rotateZX * deg);
 
             var cos_ax = Math.cos(rotateZY * deg);
             var sin_ax = Math.sin(rotateZY * deg);
@@ -215,12 +240,12 @@ window.app = window.app || {};
                 vertex.y = y;
                 vertex.z = z;
 
-                vertex.k = f / (f + vertex.z * R);
+                //vertex.k = f / (f + vertex.z * R);
             });
 
             for (var i = 0; i < polygons.length; i++) {
                 shape.normals[i] = this.getNormal(polygons[i]);
-            };
+            }
 
             return this.draw(virtualCtx);
         };
@@ -253,7 +278,7 @@ window.app = window.app || {};
             };
 
             return normal;
-        }
+        };
 
         //==================================================================================
         //
@@ -274,8 +299,8 @@ window.app = window.app || {};
 
             shape.vertexes.forEach(function(vertex)
             {
-
-                var k = vertex.k;
+                //var k = vertex.k;
+                k = vertex.k = f / (f + vertex.z * R);
 
                 var x = Math.round(k * vertex.x * R);
                 var y = Math.round(k * vertex.y * R);
@@ -340,7 +365,7 @@ window.app = window.app || {};
 
             this.clear(virtualCtx);
 
-            //$body.trigger('renderCompltete');
+            $body.trigger('renderCompltete');
 
             return this;
         };
