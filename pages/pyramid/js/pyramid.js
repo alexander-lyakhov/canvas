@@ -11,26 +11,16 @@ window.app = window.app || {};
             return new Pyramid($element);
         }
 
+        app.BaseCanvas.apply(this, arguments);
+
         var DEFAULT_SPHERE_RADIUS = 200;
+        var KEY = this.KEY;
 
-        var KEY = {
-            HOME:  36,
-            LEFT:  37,
-            RIGHT: 39,
-            UP:    38,
-            DOWN:  40
-        };
-
-        var $body = $('body');
-
-        $element[0].width  = window.innerWidth;
-        $element[0].height = window.innerHeight - 16;
-
-        var xCenter = $element.width()  >> 1;
-        var yCenter = $element.height() >> 1;
-
-        var deg = Math.PI / 180;
+        var deg = this.deg;
         var f = 1600; // k = f / (f + item.z);
+
+        var virtualCtx = this.virtualCtx;
+        var visibleCtx = this.visibleCtx;
 
         var rotate = false;
         var rotateStep = 6;
@@ -55,19 +45,13 @@ window.app = window.app || {};
 
         var colors = ['#cce', '#ecc', '#eec', '#cec'];
 
-        var virtualPage = document.createElement('canvas');
-            virtualPage.width  = $element.width();
-            virtualPage.height = $element.height();
-
-        var visibleCtx = $element[0].getContext('2d');
-        var virtualCtx = virtualPage.getContext('2d');
-            //virtualCtx.globalCompositeOperation = 'lighten';
-
         //==================================================================================
         //
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
+            app.BaseCanvas.prototype.bindEvents.apply(this, arguments);
+
             var _this = this;
 
             var x = 0;
@@ -75,7 +59,7 @@ window.app = window.app || {};
 
             $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
-            $body
+            this.$body
                 /*
                 .on('renderCompltete', function() {
                     setTimeout($.proxy(_this.rotate, _this), 30);
@@ -289,10 +273,24 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.resizeWindow = function resizeWindow()
+        {
+            this.$element[0].width = window.innerWidth;
+            this.$element[0].height = window.innerHeight - 16;
+
+            this.xCenter = this.$element.width()  >> 1;
+            this.yCenter = this.$element.height() >> 1;
+
+            return this.draw(virtualCtx);
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.draw = function draw(ctx)
         {
-            var x0 = xCenter;
-            var y0 = yCenter;
+            var x0 = this.xCenter;
+            var y0 = this.yCenter;
 
             var R = shape.R;
 
@@ -337,46 +335,10 @@ window.app = window.app || {};
 
             return this.render();
         };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.resizeWindow = function resizeWindow()
-        {
-            $element[0].width = window.innerWidth;
-            $element[0].height = window.innerHeight - 16;
-
-            xCenter = $element.width()  >> 1;
-            yCenter = $element.height() >> 1;
-
-            return this;
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.render = function render()
-        {
-            this.clear(visibleCtx);
-
-            visibleCtx.drawImage(virtualPage, 0, 0);
-
-            this.clear(virtualCtx);
-
-            $body.trigger('renderCompltete');
-
-            return this;
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.clear = function clear(context)
-        {
-            context.clearRect(0, 0, $element.width(), $element.height());
-            return this;
-        };
     };
+
+    app.Pyramid.prototype = Object.create(app.BaseCanvas.prototype);
+    app.Pyramid.prototype.constructor = app.BaseCanvas;
 
     var p = new app.Pyramid($(canvas));
         p.init();
