@@ -34,14 +34,13 @@ window.app = window.app || {};
                 {rotateXY:  90, rotateZX: 90,  rotateZY: 0}
             ],
             vertexes: [],
+            polygons: [],
             normals:  [],
             rotateZY: 0,
             rotateZX: 0,
             rotateXY: 0,
             R: DEFAULT_SPHERE_RADIUS
         };
-
-        var polygons = [];
 
         var colors = ['#cce', '#ecc', '#eec', '#cec'];
 
@@ -154,14 +153,14 @@ window.app = window.app || {};
                 });
             });
 
-            polygons.push(
+            shape.polygons.push(
                 [shape.vertexes[0], shape.vertexes[1], shape.vertexes[2]],
                 [shape.vertexes[0], shape.vertexes[3], shape.vertexes[1]],
                 [shape.vertexes[1], shape.vertexes[3], shape.vertexes[2]],
                 [shape.vertexes[2], shape.vertexes[3], shape.vertexes[0]]
             );
 
-            polygons.forEach(function(polygon) {
+            shape.polygons.forEach(function(polygon) {
                 shape.normals.push(_this.getNormal(polygon));
             });
 
@@ -224,8 +223,8 @@ window.app = window.app || {};
                 vertex.z = z;
             });
 
-            for (var i = 0; i < polygons.length; i++) {
-                shape.normals[i] = this.getNormal(polygons[i]);
+            for (var i = 0; i < shape.polygons.length; i++) {
+                shape.normals[i] = this.getNormal(shape.polygons[i]);
             }
 
             return this.draw(virtualCtx);
@@ -311,7 +310,7 @@ window.app = window.app || {};
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 2;
 
-            polygons.forEach(function(polygon, index)
+            shape.polygons.forEach(function(polygon, index)
             {
                 ctx.fillStyle = colors[index];
                 ctx.beginPath();
