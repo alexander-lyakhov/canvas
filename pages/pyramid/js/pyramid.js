@@ -25,6 +25,12 @@ window.app = window.app || {};
         var rotate = false;
         var rotateStep = 6;
 
+        var flags = {
+            showVertexes: 1,
+            showEdges: 0,
+            showPolygons: 1
+        };
+
         var shape =
         {
             vectors: [
@@ -33,17 +39,43 @@ window.app = window.app || {};
                 {rotateXY: 330, rotateZX: 330, rotateZY: 0},
                 {rotateXY:  90, rotateZX: 90,  rotateZY: 0}
             ],
+
             vertexes: [],
             polygons: [],
             normals:  [],
+
             rotateZY: 0,
             rotateZX: 0,
             rotateXY: 0,
+
+            colors: ['#cce', '#ecc', '#eec', '#cec'],
             R: DEFAULT_SPHERE_RADIUS
         };
 
-        var colors = ['#cce', '#ecc', '#eec', '#cec'];
+        //==================================================================================
+        //
+        //==================================================================================
+        this.getFlags = function getFlags() {
+            return flags;
+        }
 
+        this.showVertexes = function showVertexes(val)
+        {
+            flags.showVertexes = Boolean(val);
+            return this.draw(virtualCtx);
+        };
+
+        this.showEdges = function showEdges(val)
+        {
+            flags.showEdges = Boolean(val);
+            return this.draw(virtualCtx);
+        };
+
+        this.showPolygons = function showPolygons(val)
+        {
+            flags.showPolygons = Boolean(val);
+            return this.draw(virtualCtx);
+        };
         //==================================================================================
         //
         //==================================================================================
@@ -293,17 +325,20 @@ window.app = window.app || {};
 
             var R = shape.R;
 
-            shape.vertexes.forEach(function(vertex)
+            if (flags.showVertexes)
             {
-                var k = vertex.k = f / (f + vertex.z * R);
+                shape.vertexes.forEach(function(vertex, index)
+                {
+                    var k = vertex.k = f / (f + vertex.z * R);
 
-                var x = Math.round(k * vertex.x * R);
-                var y = Math.round(k * vertex.y * R);
+                    var x = Math.round(k * vertex.x * R);
+                    var y = Math.round(k * vertex.y * R);
 
-                ctx.fillStyle = '#fff';
-                ctx.moveTo(x0 + x, y0 - y);
-                ctx.fillRect(x0 + x - 2, y0 - y - 2, 4, 4);
-            });
+                    ctx.fillStyle = '#fff';
+                    ctx.moveTo(x0 + x, y0 - y);
+                    ctx.fillRect(x0 + x - 2, y0 - y - 2, 4, 4);
+                });
+            }
 
             //return this.render();
 
@@ -312,7 +347,7 @@ window.app = window.app || {};
 
             shape.polygons.forEach(function(polygon, index)
             {
-                ctx.fillStyle = colors[index];
+                ctx.fillStyle = shape.colors[index];
                 ctx.beginPath();
 
                 if (shape.normals[index].dz > 0)
@@ -326,8 +361,12 @@ window.app = window.app || {};
                             ctx.lineTo(x0 + Math.round(k * R * polygon[i].x), y0 - Math.round(k * R * polygon[i].y));
                     }
 
-                    ctx.fill();
-                    //ctx.stroke();
+                    k = polygon[0].k;
+                    ctx.lineTo(x0 + Math.round(k * R * polygon[0].x), y0 - Math.round(k * R * polygon[0].y));
+
+                    flags.showPolygons && ctx.fill();
+                    flags.showEdges    &&  ctx.stroke();
+
                     ctx.closePath();
                 }
             });
@@ -338,8 +377,5 @@ window.app = window.app || {};
 
     app.Pyramid.prototype = Object.create(app.BaseCanvas.prototype);
     app.Pyramid.prototype.constructor = app.BaseCanvas;
-
-    var p = new app.Pyramid($(canvas));
-        p.init();
 
 })(window.app, jQuery);

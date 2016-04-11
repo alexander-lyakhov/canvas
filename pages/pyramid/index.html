@@ -11,11 +11,33 @@
 
     <canvas id="canvas"></canvas>
 
+    <section class="control-panel pyramid-control-panel">
+        <ul class="preset-list"></ul>
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-vertexes" class="control-panel__checkbox" />
+                <label id="label-show-vertexes" for="checkbox-show-vertexes" class="control-panel__label noselect">Show vertexes</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-edges" class="control-panel__checkbox" />
+                <label id="label-show-edges" for="checkbox-show-edges" class="control-panel__label noselect">Show edges</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-polygons" class="control-panel__checkbox" />
+                <label id="label-show-polygons" for="checkbox-show-polygons" class="control-panel__label noselect">Show polygons</label>
+            </div>
+        </div>
+    </section>
+
     <nav class="to-home"><a href="../..">&larr; Home</a></nav>
 
     <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="../../js/base-canvas.js"></script>
     <script type="text/javascript" src="js/pyramid.js"></script>
+    <script type="text/javascript" src="js/pyramid-control-panel.js"></script>
 </body>
 
 </html>
