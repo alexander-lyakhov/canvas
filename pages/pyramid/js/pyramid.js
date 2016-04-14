@@ -65,6 +65,8 @@ window.app = window.app || {};
         this.enableAutoRotation = function enableAutoRotation(val)
         {
             flags.autoRotation = Boolean(val);
+            val ? this.unbindControls() : this.bindControls();
+
             return this.draw(virtualCtx);
         };
 
@@ -94,9 +96,6 @@ window.app = window.app || {};
 
             var _this = this;
 
-            var x = 0;
-            var y = 0;
-
             $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
             this.$body
@@ -108,6 +107,32 @@ window.app = window.app || {};
                         timeout = setTimeout($.proxy(_this.rotate, _this), 30);
                     }
                 })
+                .on('mousewheel DOMMouseScroll', function(e)
+                {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
+
+                    Math.abs(direction) === 120 ?
+                        direction > 0 ? _this.scale(1):_this.scale(-1):
+                        direction < 0 ? _this.scale(1):_this.scale(-1);
+                })
+
+            return this.bindControls();
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.bindControls = function bindControls()
+        {
+            var _this = this;
+
+            var x = 0;
+            var y = 0;
+
+            this.$body
                 .on('mousedown', function(e) {
                     rotate = 1;
                     x = e.clientX;
@@ -127,17 +152,6 @@ window.app = window.app || {};
                 })
                 .on('mouseup', function() {
                     rotate = 0;
-                })
-                .on('mousewheel DOMMouseScroll', function(e)
-                {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
-
-                    Math.abs(direction) === 120 ?
-                        direction > 0 ? _this.scale(1):_this.scale(-1):
-                        direction < 0 ? _this.scale(1):_this.scale(-1);
                 })
                 .on('keydown', function(e)
                 {
@@ -172,6 +186,17 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.unbindControls = function unbindControls()
+        {
+            console.log('unbindControls');
+
+            this.$body.off('mousedown mousemove mouseup keydown');
+            return this;
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.init = function init()
         {
             var _this = this;
@@ -193,7 +218,7 @@ window.app = window.app || {};
                     x:  x,
                     y:  y,
                     z:  z,
-                    k: 1
+                    k:  1
                 });
             });
 
