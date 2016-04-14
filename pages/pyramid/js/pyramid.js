@@ -25,7 +25,10 @@ window.app = window.app || {};
         var rotate = false;
         var rotateStep = 6;
 
+        var timeout = null;
+
         var flags = {
+            autoRotation: 0,
             showVertexes: 1,
             showEdges: 0,
             showPolygons: 1
@@ -59,6 +62,14 @@ window.app = window.app || {};
             return flags;
         }
 
+        this.enableAutoRotation = function enableAutoRotation(val)
+        {
+            flags.autoRotation = Boolean(val);
+            val ? this.unbindControls() : this.bindControls();
+
+            return this.draw(virtualCtx);
+        };
+
         this.showVertexes = function showVertexes(val)
         {
             flags.showVertexes = Boolean(val);
@@ -85,17 +96,43 @@ window.app = window.app || {};
 
             var _this = this;
 
-            var x = 0;
-            var y = 0;
-
             $(window).on('resize', $.proxy(_this.resizeWindow, _this));
 
             this.$body
-                /*
-                .on('renderCompltete', function() {
-                    setTimeout($.proxy(_this.rotate, _this), 30);
+                .on('renderCompltete', function()
+                {
+                    clearTimeout(timeout);
+
+                    if (flags.autoRotation) {
+                        timeout = setTimeout($.proxy(_this.rotate, _this), 30);
+                    }
                 })
-                */
+                .on('mousewheel DOMMouseScroll', function(e)
+                {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
+
+                    Math.abs(direction) === 120 ?
+                        direction > 0 ? _this.scale(1):_this.scale(-1):
+                        direction < 0 ? _this.scale(1):_this.scale(-1);
+                })
+
+            return this.bindControls();
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.bindControls = function bindControls()
+        {
+            var _this = this;
+
+            var x = 0;
+            var y = 0;
+
+            this.$body
                 .on('mousedown', function(e) {
                     rotate = 1;
                     x = e.clientX;
@@ -115,17 +152,6 @@ window.app = window.app || {};
                 })
                 .on('mouseup', function() {
                     rotate = 0;
-                })
-                .on('mousewheel DOMMouseScroll', function(e)
-                {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    var direction = e.originalEvent.detail || e.originalEvent.wheelDelta;
-
-                    Math.abs(direction) === 120 ?
-                        direction > 0 ? _this.scale(1):_this.scale(-1):
-                        direction < 0 ? _this.scale(1):_this.scale(-1);
                 })
                 .on('keydown', function(e)
                 {
@@ -160,6 +186,17 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
+        this.unbindControls = function unbindControls()
+        {
+            console.log('unbindControls');
+
+            this.$body.off('mousedown mousemove mouseup keydown');
+            return this;
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
         this.init = function init()
         {
             var _this = this;
@@ -181,7 +218,7 @@ window.app = window.app || {};
                     x:  x,
                     y:  y,
                     z:  z,
-                    k: 1
+                    k:  1
                 });
             });
 
@@ -231,8 +268,10 @@ window.app = window.app || {};
         //==================================================================================
         this.rotate = function rotate()
         {
-            //rotateZX  = (rotateZX + 3) % 360;
-            //rotateZY  = (rotateZY + 3) % 360;
+            if (flags.autoRotation) {
+                shape.rotateZX = (shape.rotateZX + 3) % 360;
+                shape.rotateZY = (shape.rotateZY + 3) % 360;
+            }
 
             var cos_ay = Math.cos(shape.rotateZX * deg);
             var sin_ay = Math.sin(shape.rotateZX * deg);
@@ -325,20 +364,20 @@ window.app = window.app || {};
 
             var R = shape.R;
 
-            if (flags.showVertexes)
+            shape.vertexes.forEach(function(vertex, index)
             {
-                shape.vertexes.forEach(function(vertex, index)
+                var k = vertex.k = f / (f + vertex.z * R);
+
+                var x = Math.round(k * vertex.x * R);
+                var y = Math.round(k * vertex.y * R);
+
+                if (flags.showVertexes)
                 {
-                    var k = vertex.k = f / (f + vertex.z * R);
-
-                    var x = Math.round(k * vertex.x * R);
-                    var y = Math.round(k * vertex.y * R);
-
                     ctx.fillStyle = '#fff';
                     ctx.moveTo(x0 + x, y0 - y);
                     ctx.fillRect(x0 + x - 2, y0 - y - 2, 4, 4);
-                });
-            }
+                }
+            });
 
             //return this.render();
 

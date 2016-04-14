@@ -161,3 +161,11 @@ canvas {
 .control-panel__checkbox:checked + .control-panel__label:before {
     background: #999;
 }
+
+.control-panel__separator {
+    /*background: #066;*/
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #666;
+    height: 0;
+    margin: 0 8px;
+}
