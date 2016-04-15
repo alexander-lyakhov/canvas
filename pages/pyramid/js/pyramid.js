@@ -188,8 +188,6 @@ window.app = window.app || {};
         //==================================================================================
         this.unbindControls = function unbindControls()
         {
-            console.log('unbindControls');
-
             this.$body.off('mousedown mousemove mouseup keydown');
             return this;
         };
@@ -232,8 +230,6 @@ window.app = window.app || {};
             shape.polygons.forEach(function(polygon) {
                 shape.normals.push(_this.getNormal(polygon));
             });
-
-            console.log(shape);
 
             return this.draw(virtualCtx);
             //return this.rotate();

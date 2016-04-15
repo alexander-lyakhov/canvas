@@ -94,6 +94,13 @@ canvas {
     top: 0;
 }
 
+.control-panel__separator {
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #666;
+    height: 0;
+    margin: 0 8px;
+}
+
 .preset-list {
     margin: 8px 8px;
 }
@@ -138,15 +145,15 @@ canvas {
     margin: 12px 8px;
 }
 
-.control-panel__checkbox {
+[type=checkbox] {
     display: none;
 }
 
-.control-panel__label {
+label {
     cursor: pointer;
 }
 
-.control-panel__label:before {
+label:before {
     content: '';
     border: 1px solid #999;
     box-sizing: border-box;
@@ -158,14 +165,6 @@ canvas {
     margin: 0 8px 0 0;
 }
 
-.control-panel__checkbox:checked + .control-panel__label:before {
+[type=checkbox]:checked + label:before {
     background: #999;
-}
-
-.control-panel__separator {
-    /*background: #066;*/
-    border-top: 1px solid #222;
-    border-bottom: 1px solid #666;
-    height: 0;
-    margin: 0 8px;
 }
