@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wheel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="control-panel wheel-control-panel">
+        <ul class="preset-list"></ul>
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-reverse" class="control-panel__checkbox" />
+                <label id="label-reverse" for="checkbox-reverse" class="control-panel__label noselect">Reverse</label>
+            </div>
+        </div>
+
+        <hr class="control-panel__separator" />
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-circle" class="control-panel__checkbox" />
+                <label id="label-show-circle" for="checkbox-show-circle" class="control-panel__label noselect">Show circle</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-rays" class="control-panel__checkbox" />
+                <label id="label-show-rays" for="checkbox-show-rays" class="control-panel__label noselect">Show rays</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-enable-colors" class="control-panel__checkbox" />
+                <label id="label-enable-colors" for="checkbox-enable-colors" class="control-panel__label noselect">Enable colors</label>
+            </div>
+        </div>
+    </section>
+
+    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
+
+    <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="../../js/base-canvas.js"></script>
+    <script type="text/javascript" src="js/wheel.js"></script>
+    <script type="text/javascript" src="js/wheel-control-panel.js"></script>
+</body>
+
+</html>
