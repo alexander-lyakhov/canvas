@@ -370,7 +370,6 @@ window.app = window.app || {};
                 if (flags.showVertexes)
                 {
                     ctx.fillStyle = '#fff';
-                    ctx.moveTo(x0 + x, y0 - y);
                     ctx.fillRect(x0 + x - 2, y0 - y - 2, 4, 4);
                 }
             });
@@ -400,7 +399,7 @@ window.app = window.app || {};
                     ctx.lineTo(x0 + Math.round(k * R * polygon[0].x), y0 - Math.round(k * R * polygon[0].y));
 
                     flags.showPolygons && ctx.fill();
-                    flags.showEdges    &&  ctx.stroke();
+                    flags.showEdges    && ctx.stroke();
 
                     ctx.closePath();
                 }

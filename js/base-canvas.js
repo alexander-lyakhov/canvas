@@ -41,7 +41,6 @@ window.app.BaseCanvas = (function(app, $) {
     //
     //==================================================================================
     BaseCanvas.prototype.bindEvents = function bindEvents() {
-        //$(window).on('resize', $.proxy(this.resizeWindow, this));
     }
 
     //==================================================================================
