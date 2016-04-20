@@ -59,7 +59,7 @@ canvas {
     width: 256px;
     height: 256px;
     display: inline-block;
-    margin: 0 64px;
+    margin: 32px 32px;
 }
 
 .page-list__item a {
