@@ -173,7 +173,7 @@ label {
  *  Help Button
  */
 
-.button-show-help {
+.button-tooltip {
     font: 18px terminal;
     color: #abc;
     background: #456;

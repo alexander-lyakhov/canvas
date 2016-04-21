@@ -60,7 +60,7 @@ window.app = window.app || {};
         //==================================================================================
         this.getFlags = function getFlags() {
             return flags;
-        }
+        };
 
         this.enableAutoRotation = function enableAutoRotation(val)
         {
@@ -117,7 +117,7 @@ window.app = window.app || {};
                     Math.abs(direction) === 120 ?
                         direction > 0 ? _this.scale(1):_this.scale(-1):
                         direction < 0 ? _this.scale(1):_this.scale(-1);
-                })
+                });
 
             return this.bindControls();
         };

@@ -8,15 +8,12 @@
             return new WheelControlPanel($element);
         }
 
-        var $body = $('body');
+        app.BaseControlPanel.apply(this, arguments);
 
         var $checkboxReverse      = $element.find('#checkbox-reverse');
         var $checkboxShowCircle   = $element.find('#checkbox-show-circle');
         var $checkboxShowRays     = $element.find('#checkbox-show-rays');
         var $checkboxEnableColors = $element.find('#checkbox-enable-colors');
-
-        var $tooltip = $('.tooltip');
-        var $buttonShowHelp = $element.find('.button-show-help');
 
         var wheel = new app.Wheel($(canvas));
             wheel.init();
@@ -40,38 +37,9 @@
         //==================================================================================
         //
         //==================================================================================
-        this.showTooltip = function showTooltip()
-        {
-            $tooltip.addClass('flipped');
-            return this;
-        }
-
-        this.hideTooltip = function hideTooltip()
-        {
-            $tooltip.removeClass('flipped');
-            return this;
-        }
-
-        //==================================================================================
-        //
-        //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            var _this = this;
-
-            $buttonShowHelp
-                .on('mouseover', $.proxy(_this.showTooltip, _this))
-                .on('mouseout',  $.proxy(_this.hideTooltip, _this));
-
-            $body.on('keydown keyup', function(e)
-            {
-                if (e.keyCode === 191) // forward slash
-                {
-                    e.type === 'keydown' ?
-                        _this.showTooltip():
-                        _this.hideTooltip();
-                }
-            });
+            app.BaseControlPanel.prototype.bindEvents.apply(this);
 
             $checkboxReverse.on('change', function(e) {
                 wheel.reverse();
@@ -92,6 +60,9 @@
             return this;
         };
     };
+
+    app.WheelControlPanel.prototype = Object.create(app.BaseControlPanel.prototype);
+    app.WheelControlPanel.prototype.constructor = app.BaseControlPanel;
 
     var controlPanel = new app.WheelControlPanel($('.wheel-control-panel'));
         controlPanel.init();
