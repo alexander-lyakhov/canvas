@@ -11,6 +11,7 @@ window.app.BaseCanvas = (function(app, $) {
         }
 
         this.KEY = {
+            END:   35,
             HOME:  36,
             LEFT:  37,
             RIGHT: 39,
@@ -41,23 +42,7 @@ window.app.BaseCanvas = (function(app, $) {
     //
     //==================================================================================
     BaseCanvas.prototype.bindEvents = function bindEvents() {
-    }
-
-    //==================================================================================
-    //
-    //==================================================================================
-    /*
-    BaseCanvas.prototype.resizeWindow = function resizeWindow()
-    {
-        this.$element[0].width = window.innerWidth;
-        this.$element[0].height = window.innerHeight - 16;
-
-        this.xCenter = this.$element.width()  >> 1;
-        this.yCenter = this.$element.height() >> 1;
-
-        return this.draw();
     };
-    */
 
     //==================================================================================
     //
@@ -71,7 +56,7 @@ window.app.BaseCanvas = (function(app, $) {
         this.$body.trigger('renderCompltete');
 
         return this;
-    }
+    };
 
     //==================================================================================
     //

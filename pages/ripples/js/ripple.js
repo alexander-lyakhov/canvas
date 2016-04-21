@@ -304,7 +304,7 @@ window.app = window.app || {};
                 /*
                  * ledder from top to bottom
                  */
-                for (var row = 0; row < size - 1; row++) {
+                for (row = 0; row < size - 1; row++) {
                     gridPath.push(particles[row * size + col + 1]);
                     gridPath.push(particles[(row + 1) * size + col]);
                 }
@@ -340,7 +340,7 @@ window.app = window.app || {};
 
             for (var i = 1; i < gridPath.length; i++)
             {
-                var position = gridPath[i].getPosition();
+                position = gridPath[i].getPosition();
                 ctx.lineTo(position.x, position.y);
             }
 
