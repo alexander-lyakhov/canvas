@@ -132,7 +132,6 @@ window.app = window.app || {};
         this.draw = function draw(canvas)
         {
             canvas.fillStyle = colorDepth ? color:'#fff';
-            canvas.moveTo(xPosition, yPosition);
             canvas.fillRect(xPosition - 2, yPosition - 2, 4, 4);
 
             return this;
@@ -147,6 +146,8 @@ window.app = window.app || {};
         if (!(this instanceof Ripple)) {
             return new Ripple($element);
         }
+
+        app.BaseCanvas.apply(this, arguments);
 
         $element[0].width = window.innerWidth;
         $element[0].height = window.innerHeight - 16;
@@ -171,8 +172,8 @@ window.app = window.app || {};
             virtualPage.width  = $element.width();
             virtualPage.height = $element.height();
 
-        var visibleCtx = $element[0].getContext('2d');
-        var virtualCtx = virtualPage.getContext('2d');
+        var virtualCtx = this.virtualCtx;
+        var visibleCtx = this.visibleCtx;
 
         //==================================================================================
         //
@@ -180,6 +181,12 @@ window.app = window.app || {};
         this.bindEvents = function bindEvents()
         {
             var _this = this;
+
+            /*
+            this.$body.on('renderCompltete', function() {
+                setTimeout($.proxy(_this.action, _this), 30);
+            });
+            */
 
             $(window).on('resize', function() {
 
@@ -260,6 +267,7 @@ window.app = window.app || {};
             });
 
             return this.vibration();
+            //return this.action();
         };
 
         //==================================================================================
@@ -376,6 +384,8 @@ window.app = window.app || {};
                     item.draw(virtualCtx);
                 });
 
+                showGrid && this.drawGrid();
+
                 _this.render();
 
             }, timeInterval);
@@ -386,27 +396,18 @@ window.app = window.app || {};
         //==================================================================================
         //
         //==================================================================================
-        this.render = function render()
+        this.action = function action()
         {
-            this.clear(visibleCtx);
+            particles.forEach(function(item) {
+                item.nextFrame();
+                item.draw(virtualCtx);
+            });
 
-            if (showGrid) {
-                this.drawGrid();
-            }
-
-            visibleCtx.drawImage(virtualPage, 0, 0);
-
-            return this.clear(virtualCtx);
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.clear = function clear(context)
-        {
-            context.clearRect(0, 0, $element.width(), $element.height());
-            return this;
+            return this.draw();
         };
     };
+
+    app.Ripple.prototype = Object.create(app.BaseCanvas.prototype);
+    app.Ripple.prototype.constructor = app.BaseCanvas;
 
 })(window.app, jQuery);
