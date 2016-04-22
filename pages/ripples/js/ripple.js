@@ -384,7 +384,7 @@ window.app = window.app || {};
                     item.draw(virtualCtx);
                 });
 
-                showGrid && this.drawGrid();
+                showGrid && _this.drawGrid();
 
                 _this.render();
 
