@@ -170,7 +170,7 @@ label {
 }
 
 /*
- *  Help Button
+ *  Tooltip Button
  */
 
 .button-tooltip {
@@ -189,6 +189,11 @@ label {
     margin: 0 0 0 -16px;
     padding: 0;
     cursor: pointer;
+}
+
+.button-tooltip:hover {
+    color: #456;
+    background: #abc;
 }
 
 /*
