@@ -255,3 +255,40 @@ label {
     transition: transform 0.3s;
     transform: rotateX(0deg);
 }
+
+/*
+ *  Statusbar
+ */
+
+.statusbar {
+    background: #333;
+    width: 100%;
+    height: 32px;
+    position: absolute;
+}
+
+.statusbar span {
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+}
+
+.statusbar-bottom {
+    bottom: 0;
+}
+
+.statusbar-sinus {
+    font: 13px verdana, serif, arial;
+    color: #eee;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.statusbar-sinus span {
+    color: #3c9;
+}
+
+.statusbar-sinus abbr {
+    font-weight: bold;
+    color: #c90;
+}
