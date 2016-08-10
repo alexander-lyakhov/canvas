@@ -292,3 +292,130 @@ label {
     font-weight: bold;
     color: #c90;
 }
+
+/*
+ *  Coverflow
+ */
+
+.cover-container {
+    background: #000;
+    width: 100%;
+    height: 512px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin: -256px 0 0 0;
+    perspective: 1200px;
+}
+
+.cover {
+    background: #666;
+    width: 256px;
+    height: 512px;
+    position: absolute;
+    left: 50%;
+    margin: 0 0 0 -128px;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+}
+
+.cover.hovered {
+    background: #6a8;
+}
+
+.cover a {
+    /*background: #ccc;*/
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.mirror {
+    /*background: #ccc;*/
+    height: 256px;
+    position: absolute;
+    bottom: 0;
+}
+
+.mirror img {
+    position: absolute;
+}
+
+.mirror__img {
+    transform: scaleY(-1);
+}
+
+.mirror__fader {
+    top: 0;
+}
+
+.cover-center {
+    transform: translateX(0px) rotateY(0deg) scale(1, 1);
+    transition: transform 0.6s, background-color 0.2s;
+    z-index: 1;
+}
+
+.cover-zoom-in {
+    transform: scale(1, 1);
+    transition: all 0.3s;
+}
+
+.cover-left {
+    transform: translateX(-256px) rotateY(45deg) scale(0.75, 0.75);
+    opacity: 1;
+    transition: all 0.6s;
+}
+
+.cover-left-edge {
+    transform: translateX(-480px) rotateY(60deg) scale(0.75, 0.75);
+    opacity: 0;
+    transition: all 0.6s;
+}
+
+.cover-right {
+    transform: translateX(256px) rotateY(-45deg) scale(0.75, 0.75);
+    opacity: 1;
+    transition: all 0.6s;
+}
+
+.cover-right-edge {
+    transform: translateX(480px) rotateY(-60deg) scale(0.75, 0.75);
+    opacity: 0;
+    transition: all 0.6s;
+}
+
+/*
+ *  Menu
+ */
+
+.menu {
+    font: 13px verdana;
+    color: #eee;
+    letter-spacing: 1px;
+}
+
+.menu__image-shell {
+    border: 1px solid #ccc;
+    width: 256px;
+    height: 256px;
+    overflow: hidden;
+    float: left;
+}
+
+.menu__image-list {
+    background: #044;
+}
+
+.menu__page-list {
+    background: #044;
+    margin: 0 0 0 4px;
+    float: left;
+}
+
+.menu__page-list-item {
+    width: 256px;
+    height: 32px;
+    line-height: 32px;
+}
