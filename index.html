@@ -8,23 +8,13 @@
 </head>
 
 <body>
-    <ul class="cover-container">
-        <script id="tpl-cover" type="x-tmpl-mustache">
-            <li class="cover {{className}}">
-                <a href="{{link}}">
-                    <img src="{{imgSrc}}" width="256" />
-                </a>
-                <div class="mirror">
-                    <img class="mirror__img"   src="{{imgSrc}}" width="256" />
-                    <img class="mirror__fader" src="img/cover-fader.png" width="256" />
-                </div>
-            </li>
-        </script>
+    <ul class="page-list">
+        <li class="page-list__item"><a href="pages/ripples/"><img src="img/ripples.png" width="256" /></a></li>
+        <li class="page-list__item"><a href="pages/ball/"><img src="img/ball.png" width="256" /></a></li>
+        <li class="page-list__item"><a href="pages/pyramid/"><img src="img/pyramid.png" width="256" /></a></li>
+        <li class="page-list__item"><a href="pages/wheel/"><img src="img/wheel.png" width="256" /></a></li>
+        <li class="page-list__item"><a href="pages/sinus/"><img src="img/sinus.png" width="256" /></a></li>
     </ul>
-
-    <script type="text/javascript" src="lib/jquery-1.12.1.min.js"></script>
-    <script type="text/javascript" src="lib/mustache.min.js"></script>
-    <script type="text/javascript" src="js/coverflow.js"></script>
 </body>
 
 </html>

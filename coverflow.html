@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+</head>
+
+<body>
+    <ul class="cover-container">
+        <script id="tpl-cover" type="x-tmpl-mustache">
+            <li class="cover {{className}}">
+                <a href="{{link}}">
+                    <img src="{{imgSrc}}" width="256" />
+                </a>
+                <div class="mirror">
+                    <img class="mirror__img"   src="{{imgSrc}}" width="256" />
+                    <img class="mirror__fader" src="img/cover-fader.png" width="256" />
+                </div>
+            </li>
+        </script>
+    </ul>
+
+    <script type="text/javascript" src="lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="lib/mustache.min.js"></script>
+    <script type="text/javascript" src="js/coverflow.js"></script>
+</body>
+
+</html>
