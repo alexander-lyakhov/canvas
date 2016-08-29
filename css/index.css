@@ -10,6 +10,7 @@ body    {
 }
 
 a {
+    color: #ccc;
     text-decoration: none;
 }
 
@@ -20,6 +21,14 @@ a {
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* IE/Edge */
     user-select: none;
+}
+
+.to-left {
+    float: left;
+}
+
+.to-right {
+    float: right;
 }
 
 .to-home {
@@ -81,7 +90,7 @@ canvas {
 
 
 /*
- * Control Panel styles
+ * Control Panel, Panel styles
  */
 .control-panel {
     background: #333;
@@ -92,17 +101,24 @@ canvas {
     position: fixed;
     right: 0;
     top: 0;
+    padding: 12px 8px;
 }
 
-.control-panel__separator {
+.panel {
+    background: #333;
+    border: 1px solid #666;
+    text-align: center;
+    width: 160px;
+    padding: 12px 8px;
+    clear: both;
+}
+
+.control-panel__separator,
+.panel__separator {
     border-top: 1px solid #222;
     border-bottom: 1px solid #666;
     height: 0;
-    margin: 0 8px;
-}
-
-.preset-list {
-    margin: 8px 8px;
+    margin: 8px 0;
 }
 
 .preset-list__item {
@@ -136,13 +152,13 @@ canvas {
 }
 
 .checkbox-group {
-    margin: 16px 0;
 }
 
 .checkbox-wrapper {
     color: #ccc;
     text-align: left;
-    margin: 12px 8px;
+    line-height: 24px;
+    padding: 4px 0;
 }
 
 [type=checkbox] {
@@ -153,7 +169,7 @@ label {
     cursor: pointer;
 }
 
-.control-panel__label:before {
+[type=checkbox] + label:before {
     content: '';
     border: 1px solid #999;
     box-sizing: border-box;
@@ -162,11 +178,16 @@ label {
     height: 16px;
     line-height: 20px;
     float: left;
-    margin: 0 8px 0 0;
+    margin: 4px 8px 0 0;
+}
+
+[type=checkbox] + label:hover {
+    color: #e93;
 }
 
 [type=checkbox]:checked + label:before {
-    background: #999;
+    background: #c80;
+    border: 1px solid #000;
 }
 
 /*
@@ -177,7 +198,6 @@ label {
     font: 18px terminal;
     color: #abc;
     background: #456;
-    /*border: 2px solid #abc;*/
     border: 0;
     border-radius: 16px;
     width: 32px;
@@ -221,7 +241,6 @@ label {
     left: 0;
     bottom: 100%;
     padding: 20px 10px 18px 10px;
-
     transform-style: preserve-3d;
     transform-origin: center bottom;
 
@@ -418,4 +437,114 @@ label {
     width: 256px;
     height: 32px;
     line-height: 32px;
+}
+
+/*
+ *  Control Bar
+ */
+
+.control-bar {
+    background: #444;
+    background: -webkit-linear-gradient(#666, #444);
+    background: -o-linear-gradient(#666, #444);
+    background: -moz-linear-gradient(#666, #444);
+    background: linear-gradient(#666, #444);
+    width: 100%;
+    height: 32px;
+    position: absolute;
+    top: 0;
+}
+
+.control-bar__item {
+    color: #ccc;
+    border-right: 1px solid #000;
+    text-align: center;
+    height: 100%;
+    line-height: 32px;
+    display: block;
+    position: relative;
+}
+
+.control-bar__item:last-child {
+    border-left: 1px solid #000;
+}
+
+.control-bar__item a {
+    height: 100%;
+    padding: 0 16px;
+    float: right;
+}
+
+.control-bar__item a:hover {
+    color: #ccc;
+    background: #404040;
+}
+
+.control-bar__item.selected a {
+    color: #000;
+    background: #c80;
+}
+
+.control-bar .panel {
+    border: 1px solid #c84;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 34px;
+}
+
+.panel-settings {
+    width: 160px;
+}
+
+.panel-help {
+    width: 480px;
+    padding: 12px 12px;
+}
+
+.panel-help__row {
+    border-top: 1px dotted #89a;
+    line-height: 24px;
+    width:100%;
+    clear: both;
+    overflow: hidden;
+}
+
+.panel-help__row:first-child {
+    border: none;
+}
+
+.panel-help__row-label {
+    padding: 0 4px 0 0;
+    float: left;
+}
+
+.panel-help__row-value {
+    padding: 0 0 0 4px;
+    float: right;
+}
+
+/*
+ *  Footer
+ */
+.github-ref {
+    width: 100%;
+    height: 48px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.github-ref a {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: 0 auto;
+}
+
+.github-ref svg {
+    fill: #606060;
+}
+.github-ref svg:hover {
+    fill: #808080;
 }

@@ -15,6 +15,11 @@ window.app.BaseControlPanel = (function(app, $) {
 
         this.$tooltip = $('.tooltip');
         this.$buttonTooltip = $element.find('.button-tooltip');
+
+        this.$controlBar = $('.control-bar');
+        this.$allPanels = this.$controlBar.find('.panel');
+        this.$allControlBarItems = this.$controlBar.find('.control-bar__item');
+        this.$panelHelp = this.$controlBar.find('.panel-help');
     };
 
     //==================================================================================
@@ -28,15 +33,72 @@ window.app.BaseControlPanel = (function(app, $) {
             .on('mouseover', $.proxy(_this.showTooltip, _this))
             .on('mouseout',  $.proxy(_this.hideTooltip, _this));
 
-        this.$body.on('keydown keyup', function(e)
-        {
-            if (e.keyCode === 191) // forward slash
+        this.$body
+            .on('keydown keyup', function(e)
             {
-                e.type === 'keydown' ?
-                    _this.showTooltip():
-                    _this.hideTooltip();
-            }
+                if (e.keyCode === 191) // forward slash
+                {
+                    e.type === 'keydown' ?
+                        _this
+                        	.showTooltip()
+                        	.showPanel(_this.$panelHelp):
+                        _this
+                        	.hideTooltip()
+                        	.hidePanel(_this.$panelHelp);
+                }
+            })
+            .on('click', function(e)
+            {
+                _this.$allPanels.hide();
+                _this.$allControlBarItems.removeClass('selected');
+            });
+
+        this.$controlBar.on('click', '.control-bar__item', function(e)
+        {
+            e.stopPropagation();
+
+            _this.$allPanels.hide();
+
+            $('.control-bar__item').each(function()
+            {
+                var $this = $(this);
+
+                if (this === e.currentTarget)
+                {
+                    $this
+                        .toggleClass('selected')
+                        .hasClass('selected') && $this.find('.panel').show();
+                }
+                else {
+                    $this.removeClass('selected');
+                }
+            });
         });
+
+        return this;
+    };
+
+    //==================================================================================
+    //
+    //==================================================================================
+    BaseControlPanel.prototype.showPanel = function showPanel($panel)
+    {
+        this.$allPanels.hide();
+        this.$allControlBarItems.removeClass('selected');
+
+        $panel
+            .show()
+            .parent('.control-bar__item').addClass('selected');
+
+        return this;
+    };
+
+    BaseControlPanel.prototype.hidePanel = function hidePanel($panel)
+    {
+        this.$allPanels.hide();
+        $panel.parent('.control-bar__item').removeClass('selected');
+
+        return this;
     };
 
     //==================================================================================

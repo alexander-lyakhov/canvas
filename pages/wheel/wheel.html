@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wheel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="control-panel wheel-control-panel">
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-reverse" class="control-panel__checkbox" />
+                <label id="label-reverse" for="checkbox-reverse" class="control-panel__label noselect">Reverse</label>
+            </div>
+        </div>
+
+        <hr class="control-panel__separator" />
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-circle" class="control-panel__checkbox" />
+                <label id="label-show-circle" for="checkbox-show-circle" class="control-panel__label noselect">Show circle</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-rays" class="control-panel__checkbox" />
+                <label id="label-show-rays" for="checkbox-show-rays" class="control-panel__label noselect">Show rays</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-enable-colors" class="control-panel__checkbox" />
+                <label id="label-enable-colors" for="checkbox-enable-colors" class="control-panel__label noselect">Enable colors</label>
+            </div>
+        </div>
+
+        <button class="button-tooltip">
+            <span>?</span>
+        </botton>
+    </section>
+
+    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
+
+    <div class="tooltip-wrapper noselect">
+        <div class="tooltip">
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>mousewheel</b>:</span>
+                <span class="tooltip-row__action">incrise/decrise amount of rays</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>?</b> key:</span>
+                <span class="tooltip-row__action">show this help</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="../../js/base-canvas.js"></script>
+    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+
+    <script type="text/javascript" src="js/wheel.js"></script>
+    <script type="text/javascript" src="js/wheel-control-panel.js"></script>
+</body>
+
+</html>

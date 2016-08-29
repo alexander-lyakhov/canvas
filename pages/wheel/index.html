@@ -11,54 +11,62 @@
 
     <canvas id="canvas"></canvas>
 
-    <section class="control-panel wheel-control-panel">
-        <ul class="preset-list"></ul>
+    <section class="control-bar wheel-control-panel">
+        <ul>
+            <li class="control-bar__item control-bar__item-to-home to-left"><a href="../..">&larr; Home</a></li>
 
-        <div class="checkbox-group">
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="checkbox-reverse" class="control-panel__checkbox" />
-                <label id="label-reverse" for="checkbox-reverse" class="control-panel__label noselect">Reverse</label>
-            </div>
-        </div>
+            <li class="control-bar__item control-bar__item-help to-right">
+                <a class="btn-help" href="#">Help</a>
+                <div class="panel panel-help">
+                    <div class="panel-help__row">
+                        <span class="panel-help__row-label"><b>mousewheel</b>:</span>
+                        <span class="panel-help__row-value">incrise/decrise amount of rays</span>
+                    </div>
+                    <div class="tooltip-row">
+                        <span class="panel-help__row-label"><b>?</b> key:</span>
+                        <span class="panel-help__row-value">show this help</span>
+                    </div>
+                </div>
+            </li>
 
-        <hr class="control-panel__separator" />
+            <li class="control-bar__item control-bar__item-settings to-right">
+                <a class="btn-settings" href="#">Settings</a>
+                <div class="panel panel-settings">
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-reverse"/>
+                            <label id="label-reverse" for="checkbox-reverse" class="panel__label noselect">Reverse</label>
+                        </div>
+                    </div>
 
-        <div class="checkbox-group">
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="checkbox-show-circle" class="control-panel__checkbox" />
-                <label id="label-show-circle" for="checkbox-show-circle" class="control-panel__label noselect">Show circle</label>
-            </div>
+                    <hr class="panel__separator" />
 
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="checkbox-show-rays" class="control-panel__checkbox" />
-                <label id="label-show-rays" for="checkbox-show-rays" class="control-panel__label noselect">Show rays</label>
-            </div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-show-circle"/>
+                            <label id="label-show-circle" for="checkbox-show-circle" class="panel__label noselect">Show circle</label>
+                        </div>
 
-            <div class="checkbox-wrapper">
-                <input type="checkbox" id="checkbox-enable-colors" class="control-panel__checkbox" />
-                <label id="label-enable-colors" for="checkbox-enable-colors" class="control-panel__label noselect">Enable colors</label>
-            </div>
-        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-show-rays"/>
+                            <label id="label-show-rays" for="checkbox-show-rays" class="panel__label noselect">Show rays</label>
+                        </div>
 
-        <button class="button-tooltip">
-            <span>?</span>
-        </botton>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="checkbox-enable-colors"/>
+                            <label id="label-enable-colors" for="checkbox-enable-colors" class="panel__label noselect">Enable colors</label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </section>
 
-    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
-
-    <div class="tooltip-wrapper noselect">
-        <div class="tooltip">
-            <div class="tooltip-row">
-                <span class="tooltip-row__caption"><b>mousewheel</b>:</span>
-                <span class="tooltip-row__action">incrise/decrise amount of rays</span>
-            </div>
-            <div class="tooltip-row">
-                <span class="tooltip-row__caption"><b>?</b> key:</span>
-                <span class="tooltip-row__action">show this help</span>
-            </div>
-        </div>
-    </div>
+    <footer class="github-ref">
+        <a href="https://github.com/alexander-lyakhov/canvas/tree/gh-pages/pages/wheel">
+              <svg aria-hidden="true" class="octicon octicon-mark-github" width="32" height="32" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+        </a>
+    </footer>
 
     <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="../../js/base-canvas.js"></script>
