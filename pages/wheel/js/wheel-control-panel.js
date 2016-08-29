@@ -2,7 +2,7 @@
 
 (function(app, $) {
 
-    app.WheelControlPanel = function WheelControlPanel($element) {
+    app.WheelControlBar = app.WheelControlPanel = function WheelControlPanel($element) {
 
         if (!(this instanceof WheelControlPanel)) {
             return new WheelControlPanel($element);
@@ -61,10 +61,10 @@
         };
     };
 
-    app.WheelControlPanel.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.WheelControlPanel.prototype.constructor = app.BaseControlPanel;
+    app.WheelControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
+    app.WheelControlBar.prototype.constructor = app.BaseControlPanel;
 
-    var controlPanel = new app.WheelControlPanel($('.wheel-control-panel'));
-        controlPanel.init();
+    var controlBar = new app.WheelControlPanel($('.wheel-control-panel'));
+        controlBar.init();
 
 })(window.app, jQuery);
