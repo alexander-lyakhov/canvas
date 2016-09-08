@@ -24,12 +24,12 @@ window.app = window.app || {};
         var stepAngle = 10;
 
         var amplitude = 100;
-        var range = 180;
+        var range = 90;
 
         var pathA = [];
         var pathB = [];
 
-        var drawFn = [];
+        var drawFn = null;
 
         //==================================================================================
         //
@@ -65,10 +65,6 @@ window.app = window.app || {};
                     }
                 });
 
-            $element.on('click', function() {
-                drawFn.push(drawFn.shift());
-            });
-
             return this;
         };
 
@@ -99,11 +95,20 @@ window.app = window.app || {};
         //==================================================================================
         this.init = function init()
         {
-            drawFn = [this.drawBars, this.drawLines];
+            drawFn = this.drawBars;
 
             return this
                 .bindEvents()
                 .action();
+        };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.setDrawFn = function setDrawFn(fn)
+        {
+            drawFn = fn;
+            return this;
         };
 
         //==================================================================================
@@ -136,21 +141,7 @@ window.app = window.app || {};
             angleA = (angleA + stepAngle) % 360;
             angleB = (angleB + stepAngle) % 360;
 
-            return drawFn[0].call(this);
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.resizeWindow = function resizeWindow()
-        {
-            this.$element[0].width = window.innerWidth;
-            this.$element[0].height = window.innerHeight - 16;
-
-            this.xCenter = this.$element.width()  >> 1;
-            this.yCenter = this.$element.height() >> 1;
-
-            return this;
+            return drawFn.call(this);
         };
 
         //==================================================================================
@@ -192,7 +183,7 @@ window.app = window.app || {};
             var x0 = this.xCenter;
             var y0 = this.yCenter;
 
-        ctx.beginPath();
+            ctx.beginPath();
             ctx.lineWidth = 3;
             ctx.strokeStyle = '#3e9';
 
@@ -222,11 +213,23 @@ window.app = window.app || {};
 
             return this.render();
         };
+
+        //==================================================================================
+        //
+        //==================================================================================
+        this.resizeWindow = function resizeWindow()
+        {
+            this.$element[0].width = window.innerWidth;
+            this.$element[0].height = window.innerHeight - 16;
+
+            this.xCenter = this.$element.width()  >> 1;
+            this.yCenter = this.$element.height() >> 1;
+
+            return this;
+        };
     };
 
     app.Sinus.prototype = Object.create(app.BaseCanvas.prototype);
     app.Sinus.prototype.constructor = app.BaseCanvas;
-
-    var s = new app.Sinus($('canvas')).init();
 
 })(window.app, jQuery);

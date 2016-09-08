@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ball</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="control-panel ball-control-panel">
+        <div class="checkbox-group">
+            <div class="backclipping checkbox-wrapper">
+                <input type="checkbox" id="checkbox-backclipping" class="control-panel__checkbox" />
+                <label id="label-backclipping" for="checkbox-backclipping" class="control-panel__label noselect">Backside clipping</label>
+            </div>
+            <div class="clear-viewport checkbox-wrapper">
+                <input type="checkbox" id="checkbox-clear-viewport" class="control-panel__checkbox" checked />
+                <label id="label-clear-viewport" for="checkbox-clear-viewport" class="control-panel__label noselect">Clear viewport</label>
+            </div>
+        </div>
+    </section>
+
+    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
+
+    <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="js/ball.js"></script>
+    <script type="text/javascript" src="js/ball-control-panel.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pyramid</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="control-panel pyramid-control-panel">
+        <ul class="preset-list"></ul>
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-auto-rotate" class="control-panel__checkbox" />
+                <label id="label-auto-rotate" for="checkbox-auto-rotate" class="control-panel__label noselect">Auto rotate</label>
+            </div>
+        </div>
+
+        <hr class="control-panel__separator" />
+
+        <div class="checkbox-group">
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-vertexes" class="control-panel__checkbox" />
+                <label id="label-show-vertexes" for="checkbox-show-vertexes" class="control-panel__label noselect">Show vertexes</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-edges" class="control-panel__checkbox" />
+                <label id="label-show-edges" for="checkbox-show-edges" class="control-panel__label noselect">Show edges</label>
+            </div>
+
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-polygons" class="control-panel__checkbox" />
+                <label id="label-show-polygons" for="checkbox-show-polygons" class="control-panel__label noselect">Show polygons</label>
+            </div>
+        </div>
+
+        <button class="button-tooltip">
+            <span>?</span>
+        </botton>
+    </section>
+
+    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
+
+    <div class="tooltip-wrapper noselect">
+        <div class="tooltip">
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption">hold <b>left mouse button</b> and <b>drag</b>:</span>
+                <span class="tooltip-row__action">rotate shape</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>Left</b>, <b>Right</b>, <b>Up</b>, <b>Down</b> keys:</span>
+                <span class="tooltip-row__action">rotate shape</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>mousewheel</b>:</span>
+                <span class="tooltip-row__action">zoom shape in/out</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>Home</b> key:</span>
+                <span class="tooltip-row__action">reset shape</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="tooltip-row__caption"><b>?</b> key:</span>
+                <span class="tooltip-row__action">show this help</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="../../js/base-canvas.js"></script>
+    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+
+    <script type="text/javascript" src="js/pyramid.js"></script>
+    <script type="text/javascript" src="js/pyramid-control-panel.js"></script>
+</body>
+
+</html>

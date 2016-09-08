@@ -2,7 +2,7 @@
 
 (function(app, $) {
 
-    app.PyramidControlPanel = function PyramidControlPanel($element) {
+    app.PyramidControlBar = app.PyramidControlPanel = function PyramidControlPanel($element) {
 
         if (!(this instanceof PyramidControlPanel)) {
             return new PyramidControlPanel($element);
@@ -61,8 +61,8 @@
         };
     };
 
-    app.PyramidControlPanel.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.PyramidControlPanel.prototype.constructor = app.BaseControlPanel;
+    app.PyramidControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
+    app.PyramidControlBar.prototype.constructor = app.BaseControlPanel;
 
     var controlPanel = new app.PyramidControlPanel($('.pyramid-control-panel'));
         controlPanel.init();
