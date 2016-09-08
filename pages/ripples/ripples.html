@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ripples</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css" />
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <section class="control-panel ripple-control-panel">
+        <ul class="preset-list"></ul>
+
+        <div class="checkbox-group">
+            <div class="show-color-depth checkbox-wrapper">
+                <input type="checkbox" id="checkbox-color-depth" class="control-panel__checkbox" />
+                <label id="label-color-depth" for="checkbox-color-depth" class="control-panel__label noselect">Color depth</label>
+            </div>
+
+            <div class="show-grid checkbox-wrapper">
+                <input type="checkbox" id="checkbox-show-grid" class="control-panel__checkbox"/>
+                <label id="label-show-grid" for="checkbox-show-grid" class="control-panel__label noselect">Show grid</label>
+            </div>
+        </div>
+    </section>
+
+    <nav class="to-home"><a href="../..">&larr; Home</a></nav>
+
+    <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
+    <script type="text/javascript" src="../../js/base-canvas.js"></script>
+    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+
+    <script type="text/javascript" src="js/ripple.js"></script>
+    <script type="text/javascript" src="js/ripple-control-panel.js"></script>
+</body>
+
+</html>

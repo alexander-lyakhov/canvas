@@ -23,6 +23,14 @@ a {
     user-select: none;
 }
 
+.grey-gradient {
+    background: #444;
+    background: -webkit-linear-gradient(#666, #444);
+    background: -o-linear-gradient(#666, #444);
+    background: -moz-linear-gradient(#666, #444);
+    background: linear-gradient(#666, #444);
+}
+
 .to-left {
     float: left;
 }
@@ -52,6 +60,10 @@ a {
 canvas {
     background: #000;
 }
+
+/*
+ *  Home page menu
+ */
 
 .page-list {
     text-align: center;
@@ -122,8 +134,7 @@ canvas {
 }
 
 .preset-list__item {
-    background: #444;
-    border: 1px solid #808080;
+    border: 1px solid #707070;
     margin: 4px 0;
     height: 32px;
     line-height: 32px;
@@ -131,12 +142,8 @@ canvas {
 }
 
 .preset-list__item.selected {
-    background: #333;
-}
-
-.preset-list__item.selected a {
-    font-weight: bold;
-    letter-spacing: 1px;
+    background: #404040;
+    border: 1px solid #707070;
 }
 
 .preset-list__item a {
@@ -148,7 +155,11 @@ canvas {
 }
 
 .preset-list__item a:hover {
-    background: #333;
+    background: #404040;
+}
+
+.preset-list__item.selected a {
+    background: #000;
 }
 
 .checkbox-group {
@@ -444,11 +455,6 @@ label {
  */
 
 .control-bar {
-    background: #444;
-    background: -webkit-linear-gradient(#666, #444);
-    background: -o-linear-gradient(#666, #444);
-    background: -moz-linear-gradient(#666, #444);
-    background: linear-gradient(#666, #444);
     width: 100%;
     height: 32px;
     position: absolute;
@@ -475,12 +481,12 @@ label {
     float: right;
 }
 
-.control-bar__item a:hover {
-    color: #ccc;
+.control-bar__item > a:hover {
+    /*color: #ccc;*/
     background: #404040;
 }
 
-.control-bar__item.selected a {
+.control-bar__item.selected > a {
     color: #000;
     background: #c80;
 }
@@ -504,7 +510,7 @@ label {
 
 .panel-help__row {
     border-top: 1px dotted #89a;
-    line-height: 24px;
+    line-height: 28px;
     width:100%;
     clear: both;
     overflow: hidden;

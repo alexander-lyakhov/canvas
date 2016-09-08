@@ -16,10 +16,9 @@ window.app.BaseControlPanel = (function(app, $) {
         this.$tooltip = $('.tooltip');
         this.$buttonTooltip = $element.find('.button-tooltip');
 
-        this.$controlBar = $('.control-bar');
-        this.$allPanels = this.$controlBar.find('.panel');
-        this.$allControlBarItems = this.$controlBar.find('.control-bar__item');
-        this.$panelHelp = this.$controlBar.find('.panel-help');
+        this.$allPanels = this.$element.find('.panel');
+        this.$allControlBarItems = this.$element.find('.control-bar__item');
+        this.$panelHelp = this.$element.find('.panel-help');
     };
 
     //==================================================================================
@@ -40,11 +39,11 @@ window.app.BaseControlPanel = (function(app, $) {
                 {
                     e.type === 'keydown' ?
                         _this
-                        	.showTooltip()
-                        	.showPanel(_this.$panelHelp):
+                            .showTooltip()
+                            .showPanel(_this.$panelHelp):
                         _this
-                        	.hideTooltip()
-                        	.hidePanel(_this.$panelHelp);
+                            .hideTooltip()
+                            .hidePanel(_this.$panelHelp);
                 }
             })
             .on('click', function(e)
@@ -53,7 +52,7 @@ window.app.BaseControlPanel = (function(app, $) {
                 _this.$allControlBarItems.removeClass('selected');
             });
 
-        this.$controlBar.on('click', '.control-bar__item', function(e)
+        this.$element.on('click', '.control-bar__item', function(e)
         {
             e.stopPropagation();
 

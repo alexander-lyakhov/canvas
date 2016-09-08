@@ -33,19 +33,21 @@
         }
     };
 
-    app.RippleControlPanel = function RippleControlPanel($element) {
+    app.RippleControlBar = app.RippleControlPanel = function RippleControlPanel($element) {
 
         if (!(this instanceof RippleControlPanel)) {
             return new RippleControlPanel($element);
         }
 
-        var ripple = new app.Ripple($('canvas')).bindEvents();
+        app.BaseControlPanel.apply(this, arguments);
 
         var $checkboxColorDepth = $element.find('#checkbox-color-depth');
         var $checkboxShowGrid = $element.find('#checkbox-show-grid');
         var $presetList = $element.find('.preset-list');
 
         var $selectedItem = null;
+
+        var ripple = new app.Ripple($('canvas')).bindEvents();
 
         //==================================================================================
         //
@@ -67,7 +69,7 @@
         this.createPresetList = function createPresetList()
         {
             for (var key in config) {
-                $presetList.append('<li class="preset-list__item" data-preset-name="' + key + '"><a href="#">' + key + '</a></li>');
+                $presetList.append('<li class="preset-list__item grey-gradient" data-preset-name="' + key + '"><a href="#">' + key + '</a></li>');
             }
 
             return this;
@@ -78,7 +80,11 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
+            app.BaseControlPanel.prototype.bindEvents.apply(this);
+
             $presetList.on('click', '.preset-list__item', function(e) {
+
+                e.stopPropagation();
 
                 if ($selectedItem) {
                     $selectedItem.removeClass('selected');
@@ -104,7 +110,10 @@
         };
     };
 
-    var controlPanel = new app.RippleControlPanel($('.ripple-control-panel'));
-        controlPanel.init();
+    app.RippleControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
+    app.RippleControlBar.prototype.constructor = app.BaseControlPanel;
+
+    var controlBar = new app.RippleControlPanel($('.ripple-control-panel'));
+        controlBar.init();
 
 })(window.app, jQuery);
