@@ -510,7 +510,8 @@ label {
 
 .panel-help__row {
     border-top: 1px dotted #89a;
-    line-height: 28px;
+    line-height: 32px;
+    height: 32px;
     width:100%;
     clear: both;
     overflow: hidden;
