@@ -11,7 +11,7 @@
 
     <canvas id="canvas"></canvas>
 
-    <section class="control-bar sinus-control-panel grey-gradient">
+    <nav class="control-bar sinus-control-panel grey-gradient">
         <ul>
             <li class="control-bar__item control-bar__item-to-home to-left"><a href="../..">&larr; Home</a></li>
 
@@ -36,11 +36,14 @@
             <li class="control-bar__item control-bar__item-settings to-right">
                 <a class="btn-settings" href="#">Settings</a>
                 <div class="panel panel-settings">
-                    <ul class="preset-list"></ul>
+                    <ul class="preset-list">
+                        <li class="preset-list__item grey-gradient" data-preset-name="Bars"><a href="#">Bars</a></li>
+                        <li class="preset-list__item grey-gradient" data-preset-name="Lines"><a href="#">Lines</a></li>
+                    </ul>
                 </div>
             </li>
         </ul>
-    </section>
+    </nav>
 
     <footer class="github-ref">
         <a href="https://github.com/alexander-lyakhov/canvas/tree/gh-pages/pages/sinus" target="_blank">
