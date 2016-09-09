@@ -2,8 +2,6 @@
 
 (function(app, $) {
 
-    var config = ['Bars', 'Lines'];
-
     app.SinusControlBar = app.SinusControlPanel = function SinusControlPanel($element) {
 
         if (!(this instanceof SinusControlPanel)) {
@@ -23,23 +21,9 @@
         //==================================================================================
         this.init = function init()
         {
-            this
-                .createPresetList()
-                .bindEvents();
+            this.bindEvents();
 
             $('.preset-list__item:eq(0)').click();
-
-            return this;
-        };
-
-        //==================================================================================
-        //
-        //==================================================================================
-        this.createPresetList = function createPresetList()
-        {
-            config.forEach(function(value) {
-                $presetList.append('<li class="preset-list__item grey-gradient" data-preset-name="' + value + '"><a href="#">' + value + '</a></li>');
-            });
 
             return this;
         };
