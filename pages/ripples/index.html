@@ -11,13 +11,20 @@
 
     <canvas id="canvas"></canvas>
 
-    <nav class="control-bar ripple-control-panel grey-gradient">
+    <nav class="control-bar ripple-control-panel grey-gradient" data-module-type="MenuBar">
         <ul>
+            <!-- Back item -->
+
             <li class="control-bar__item control-bar__item-to-home to-left"><a href="../..">&larr; Home</a></li>
+
+            <!-- Settings item -->
 
             <li class="control-bar__item control-bar__item-settings to-right">
                 <a class="btn-settings" href="#">Settings</a>
-                <div class="panel panel-settings">
+
+                <!-- Control panel -->
+
+                <div class="panel panel-settings" data-module-type="RippleControlPanel">
                     <ul class="preset-list"></ul>
 
                     <div class="checkbox-group">
@@ -32,6 +39,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- end of Control panel -->
             </li>
         </ul>
     </nav>
@@ -44,10 +53,12 @@
 
     <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="../../js/base-canvas.js"></script>
-    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+    <script type="text/javascript" src="../../js/top-menu.js"></script>
 
     <script type="text/javascript" src="js/ripple.js"></script>
     <script type="text/javascript" src="js/ripple-control-panel.js"></script>
+
+    <script type="text/javascript" src="../../js/modules.js"></script>
 </body>
 
 </html>

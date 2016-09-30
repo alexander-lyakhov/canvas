@@ -1,4 +1,7 @@
-window.app = window.app || {};
+window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
@@ -281,8 +284,8 @@ window.app = window.app || {};
         //==================================================================================
         this.cleanViewport = function cleanViewport(val)
         {
-        	clearViewport = Boolean(val);
-        	return this;
+            clearViewport = Boolean(val);
+            return this;
         };
 
         //==================================================================================

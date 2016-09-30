@@ -1,4 +1,7 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
@@ -33,13 +36,11 @@
         }
     };
 
-    app.RippleControlBar = app.RippleControlPanel = function RippleControlPanel($element) {
+    app.RippleControlPanel = function RippleControlPanel($element) {
 
         if (!(this instanceof RippleControlPanel)) {
             return new RippleControlPanel($element);
         }
-
-        app.BaseControlPanel.apply(this, arguments);
 
         var $checkboxColorDepth = $element.find('#checkbox-color-depth');
         var $checkboxShowGrid = $element.find('#checkbox-show-grid');
@@ -80,8 +81,6 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            app.BaseControlPanel.prototype.bindEvents.apply(this);
-
             $presetList.on('click', '.preset-list__item', function(e) {
 
                 e.stopPropagation();
@@ -109,11 +108,5 @@
             });
         };
     };
-
-    app.RippleControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.RippleControlBar.prototype.constructor = app.BaseControlPanel;
-
-    var controlBar = new app.RippleControlPanel($('.ripple-control-panel'));
-        controlBar.init();
 
 })(window.app, jQuery);

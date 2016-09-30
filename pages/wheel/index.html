@@ -11,12 +11,17 @@
 
     <canvas id="canvas"></canvas>
 
-    <nav class="control-bar wheel-control-panel grey-gradient">
+    <nav class="control-bar wheel-control-panel grey-gradient" data-module-type="MenuBar" data-module-name="menuBar">
         <ul>
+            <!-- Back item -->
+
             <li class="control-bar__item control-bar__item-to-home to-left"><a href="../..">&larr; Home</a></li>
+
+            <!-- Help item -->
 
             <li class="control-bar__item control-bar__item-help to-right">
                 <a class="btn-help" href="#">Help</a>
+
                 <div class="panel panel-help">
                     <div class="panel-help__row">
                         <span class="panel-help__row-label"><b>mousewheel</b>:</span>
@@ -29,9 +34,14 @@
                 </div>
             </li>
 
+            <!-- Settings item -->
+
             <li class="control-bar__item control-bar__item-settings to-right">
                 <a class="btn-settings" href="#">Settings</a>
-                <div class="panel panel-settings">
+
+                <!-- Control panel -->
+
+                <div class="panel panel-settings" data-module-type="WheelControlPanel">
                     <div class="checkbox-group">
                         <div class="checkbox-wrapper">
                             <input type="checkbox" id="checkbox-reverse"/>
@@ -58,6 +68,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- end of Control panel -->
             </li>
         </ul>
     </nav>
@@ -70,10 +82,12 @@
 
     <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="../../js/base-canvas.js"></script>
-    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+    <script type="text/javascript" src="../../js/top-menu.js"></script>
 
     <script type="text/javascript" src="js/wheel.js"></script>
     <script type="text/javascript" src="js/wheel-control-panel.js"></script>
+
+    <script type="text/javascript" src="../../js/modules.js"></script>
 </body>
 
 </html>

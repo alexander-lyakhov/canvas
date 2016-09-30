@@ -1,14 +1,15 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
-    app.SinusControlBar = app.SinusControlPanel = function SinusControlPanel($element) {
+    app.SinusControlPanel = function SinusControlPanel($element) {
 
         if (!(this instanceof SinusControlPanel)) {
             return new SinusControlPanel($element);
         }
-
-        app.BaseControlPanel.apply(this, arguments);
 
         var $presetList = $element.find('.preset-list');
         var $selectedItem = null;
@@ -33,8 +34,6 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            app.BaseControlPanel.prototype.bindEvents.apply(this);
-
             $presetList.on('click', '.preset-list__item', function(e) {
 
                 e.stopPropagation();
@@ -51,11 +50,5 @@
             return this;
         };
     };
-
-    app.SinusControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.SinusControlBar.prototype.constructor = app.BaseControlPanel;
-
-    var controlBar = new app.SinusControlPanel($('.sinus-control-panel'));
-        controlBar.init();
 
 })(window.app, jQuery);
