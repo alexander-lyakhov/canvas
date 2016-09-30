@@ -1,14 +1,15 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
-    app.PyramidControlBar = app.PyramidControlPanel = function PyramidControlPanel($element) {
+    app.PyramidControlPanel = function PyramidControlPanel($element) {
 
         if (!(this instanceof PyramidControlPanel)) {
             return new PyramidControlPanel($element);
         }
-
-        app.BaseControlPanel.apply(this, arguments);
 
         var $checkboxAutoRotate   = $element.find('#checkbox-auto-rotate');
         var $checkboxShowVertexes = $element.find('#checkbox-show-vertexes');
@@ -39,8 +40,6 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            app.BaseControlPanel.prototype.bindEvents.apply(this);
-
             $checkboxAutoRotate.on('change', function(e) {
                 pyramid.enableAutoRotation($(this).is(':checked'));
             });
@@ -60,11 +59,5 @@
             return this;
         };
     };
-
-    app.PyramidControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.PyramidControlBar.prototype.constructor = app.BaseControlPanel;
-
-    var controlPanel = new app.PyramidControlPanel($('.pyramid-control-panel'));
-        controlPanel.init();
 
 })(window.app, jQuery);

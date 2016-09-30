@@ -1,4 +1,7 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
@@ -7,8 +10,6 @@
         if (!(this instanceof Gallery)) {
             return new Gallery($element);
         }
-
-        console.log('Gallery')
 
         var KEY = {
             ENTER:  13,

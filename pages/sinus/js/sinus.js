@@ -1,4 +1,7 @@
-window.app = window.app || {};
+window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 

@@ -1,14 +1,15 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
-    app.BallControlBar = app.BallControlPanel = function BallControlPanel($element) {
+    app.BallControlPanel = function BallControlPanel($element) {
 
         if (!(this instanceof BallControlPanel)) {
             return new BallControlPanel($element);
         }
-
-        app.BaseControlPanel.apply(this, arguments);
 
         var ball = new app.Ball($('canvas'));
             ball.init();
@@ -28,8 +29,6 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            app.BaseControlPanel.prototype.bindEvents.apply(this);
-
             $checkboxBackclipping.on('change', function(e) {
                 ball.enableBackclipping($(this).is(':checked'));
             });
@@ -40,10 +39,9 @@
         };
     };
 
-    app.BallControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.BallControlBar.prototype.constructor = app.BaseControlPanel;
-
+    /*
     var controlBar = new app.BallControlPanel($('.ball-control-panel'));
         controlBar.init();
+    */
 
 })(window.app, jQuery);

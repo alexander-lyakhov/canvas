@@ -11,12 +11,17 @@
 
     <canvas id="canvas"></canvas>
 
-    <nav class="control-bar sinus-control-panel grey-gradient">
+    <nav class="control-bar sinus-control-panel grey-gradient" data-module-type="MenuBar">
         <ul>
+            <!-- Back item -->
+
             <li class="control-bar__item control-bar__item-to-home to-left"><a href="../..">&larr; Home</a></li>
+
+            <!-- Help item -->
 
             <li class="control-bar__item control-bar__item-help to-right">
                 <a class="btn-help" href="#">Help</a>
+
                 <div class="panel panel-help">
                     <div class="panel-help__row">
                         <span class="panel-help__row-label"><b>Mousewheel</b></span>
@@ -33,14 +38,21 @@
                 </div>
             </li>
 
+            <!-- Settings item -->
+
             <li class="control-bar__item control-bar__item-settings to-right">
                 <a class="btn-settings" href="#">Settings</a>
-                <div class="panel panel-settings">
+
+                <!-- Control panel -->
+
+                <div class="panel panel-settings" data-module-type="SinusControlPanel">
                     <ul class="preset-list">
                         <li class="preset-list__item grey-gradient" data-preset-name="Bars"><a href="#">Bars</a></li>
                         <li class="preset-list__item grey-gradient" data-preset-name="Lines"><a href="#">Lines</a></li>
                     </ul>
                 </div>
+
+                <!-- end of Control panel -->
             </li>
         </ul>
     </nav>
@@ -53,10 +65,12 @@
 
     <script type="text/javascript" src="../../lib/jquery-1.12.1.min.js"></script>
     <script type="text/javascript" src="../../js/base-canvas.js"></script>
-    <script type="text/javascript" src="../../js/base-control-panel.js"></script>
+    <script type="text/javascript" src="../../js/top-menu.js"></script>
 
     <script type="text/javascript" src="js/sinus.js"></script>
     <script type="text/javascript" src="js/sinus-control-panel.js"></script>
+
+    <script type="text/javascript" src="../../js/modules.js"></script>
 </body>
 
 </html>

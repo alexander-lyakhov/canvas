@@ -1,14 +1,15 @@
-﻿window.app = window.app || {};
+﻿window.app = window.app || {
+    modules:{},
+    modName:{}
+};
 
 (function(app, $) {
 
-    app.WheelControlBar = app.WheelControlPanel = function WheelControlPanel($element) {
+    app.WheelControlPanel = function WheelControlPanel($element) {
 
         if (!(this instanceof WheelControlPanel)) {
             return new WheelControlPanel($element);
         }
-
-        app.BaseControlPanel.apply(this, arguments);
 
         var $checkboxReverse      = $element.find('#checkbox-reverse');
         var $checkboxShowCircle   = $element.find('#checkbox-show-circle');
@@ -39,8 +40,6 @@
         //==================================================================================
         this.bindEvents = function bindEvents()
         {
-            app.BaseControlPanel.prototype.bindEvents.apply(this);
-
             $checkboxReverse.on('change', function(e) {
                 wheel.reverse();
             });
@@ -60,11 +59,5 @@
             return this;
         };
     };
-
-    app.WheelControlBar.prototype = Object.create(app.BaseControlPanel.prototype);
-    app.WheelControlBar.prototype.constructor = app.BaseControlPanel;
-
-    var controlBar = new app.WheelControlPanel($('.wheel-control-panel'));
-        controlBar.init();
 
 })(window.app, jQuery);
