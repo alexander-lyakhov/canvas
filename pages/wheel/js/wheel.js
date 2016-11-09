@@ -32,7 +32,7 @@ window.app = window.app || {
         var flags = {
             showCircle: 1,
             showRays: 1,
-            enableColors: 0
+            enableColors: 1
         };
 
         //==================================================================================
@@ -112,9 +112,9 @@ window.app = window.app || {
             {
                 var angle = i * 180 / rays;
 
-                var r = 80 + Math.round(Math.random() * 128);
-                var g = 80 + Math.round(Math.random() * 128);
-                var b = 80 + Math.round(Math.random() * 128);
+                var r = 64 + Math.round(Math.random() * 192);
+                var g = 64 + Math.round(Math.random() * 160);
+                var b = 64 + Math.round(Math.random() * 160);
 
                 var color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
 
@@ -272,6 +272,7 @@ window.app = window.app || {
     };
 
     app.Wheel.prototype = Object.create(app.BaseCanvas.prototype);
-    app.Wheel.prototype.constructor = app.BaseCanvas;
+    //app.Wheel.prototype.constructor = app.BaseCanvas;
+    app.Wheel.prototype.constructor = app.Wheel;
 
 })(window.app, jQuery);
