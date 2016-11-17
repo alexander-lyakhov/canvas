@@ -65,13 +65,49 @@ canvas {
  *  Home page menu
  */
 
+.page {
+    min-height: 100%;
+    padding-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-switcher {
+    background: #404040;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.menu-switcher__item {
+    font: bold 20px lucida console, verdana;
+    color: #ccc;
+    border-bottom: 3px solid transparent;
+    text-align: center;
+    width: 160px;
+    height: 32px;
+    margin: 0 4px;
+}
+
+.menu-switcher__item a {
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+
+.menu-switcher__item-selected {
+    border-bottom: 3px solid #c93;
+}
+
 .page-list {
     text-align: center;
     width: 100%;
-    height: 320px;
-    position: absolute;
-    top: 50%;
-    margin: -160px 0 0 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
 }
 
 .page-list__item {
@@ -91,15 +127,8 @@ canvas {
 }
 
 .page-list__item a:hover {
-    border: 2px solid #999;
+    border: 2px solid #ccc;
 }
-
-.center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-}
-
 
 /*
  * Control Panel, Panel styles
@@ -536,10 +565,8 @@ label {
  */
 .github-ref {
     width: 100%;
-    height: 48px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
+    height: 64px;
+    margin-top: -64px;
 }
 
 .github-ref a {
@@ -547,6 +574,8 @@ label {
     height: 32px;
     display: block;
     margin: 0 auto;
+    position: relative;
+    top: 16px;
 }
 
 .github-ref svg {
