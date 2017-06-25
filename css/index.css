@@ -500,6 +500,10 @@ label {
     position: relative;
 }
 
+.control-bar__item-settings > a {
+    color: #e93;
+}
+
 .control-bar__item:last-child {
     border-left: 1px solid #000;
 }
