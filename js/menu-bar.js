@@ -101,7 +101,7 @@ window.app.MenuBar = (function(app, $) {
     //==================================================================================
     MenuBar.prototype.showTooltip = function showTooltip()
     {
-        this.$tooltip.addClass('flipped');
+        this.$tooltip && this.$tooltip.addClass('flipped');
         return this;
     };
 
@@ -110,7 +110,7 @@ window.app.MenuBar = (function(app, $) {
     //==================================================================================
     MenuBar.prototype.hideTooltip = function hideTooltip()
     {
-        this.$tooltip.removeClass('flipped');
+        this.$tooltip && this.$tooltip.removeClass('flipped');
         return this;
     };
 

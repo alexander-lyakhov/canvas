@@ -40,7 +40,7 @@ window.app.BaseControlPanel = (function(app, $) {
                         _this.showTooltip():
                         _this.hideTooltip();
                 }
-            })
+            });
 
         return this;
     };
@@ -51,7 +51,7 @@ window.app.BaseControlPanel = (function(app, $) {
     //==================================================================================
     BaseControlPanel.prototype.showTooltip = function showTooltip()
     {
-        this.$tooltip.addClass('flipped');
+        this.$tooltip && this.$tooltip.addClass('flipped');
         return this;
     };
 
@@ -60,7 +60,7 @@ window.app.BaseControlPanel = (function(app, $) {
     //==================================================================================
     BaseControlPanel.prototype.hideTooltip = function hideTooltip()
     {
-        this.$tooltip.removeClass('flipped');
+        this.$tooltip && this.$tooltip.removeClass('flipped');
         return this;
     };
 
