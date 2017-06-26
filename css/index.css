@@ -501,7 +501,8 @@ label {
 }
 
 .control-bar__item-settings > a {
-    color: #e93;
+    outline: 1px solid #c80;
+    outline-offset: -1px;
 }
 
 .control-bar__item:last-child {
